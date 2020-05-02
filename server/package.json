@@ -1,0 +1,24 @@
+{
+  "name": "amit_fiverr_provision_aws",
+  "version": "1.0.0",
+  "description": "Provisioning on AWS for Fiverr home assignment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmitBenAmi/ProvisionAWS.git"
+  },
+  "keywords": [
+    "aws",
+    "provision",
+    "fiverr"
+  ],
+  "author": "Amit Ben Ami",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AmitBenAmi/ProvisionAWS/issues"
+  },
+  "homepage": "https://github.com/AmitBenAmi/ProvisionAWS#readme"
+}

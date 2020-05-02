@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/AmitBenAmi/ProvisionAWS/issues"
   },
-  "homepage": "https://github.com/AmitBenAmi/ProvisionAWS#readme"
+  "homepage": "https://github.com/AmitBenAmi/ProvisionAWS#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }

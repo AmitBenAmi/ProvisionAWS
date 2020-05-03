@@ -11,12 +11,8 @@ class PrivateNetwork:
         response = self.__client.create_vpc(CidrBlock=self.__cidr)
         self.__id = response['Vpc']['VpcId']
 
-    def create_with_subnets(self):
+    def create_with_subnet(self):
         self.create()
 
-        region = Region()
-        az = AvailabilityZone(ec2_client=self.__client, region_name=region.name)
-
-        for zone_id in az.zone_ids():
-            subnet = Subnet(ec2_client=self.__client, availability_zone_id=zone_id, vpc_id=self.__id)
-            subnet.create()
+        subnet = Subnet(ec2_client=self.__client, vpc_id=self.__id)
+        subnet.create()

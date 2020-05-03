@@ -4,9 +4,12 @@ class AvailabilityZone:
         self.__region_name = region_name
 
     def zone_ids(self):
+        if (self.__zones == None):
+            self.__get_all_zones_for_region()
+            
         return list(map(lambda zone: zone['ZoneId'], self.__zones))
 
-    def get_all_zones_for_region(self):
+    def __get_all_zones_for_region(self):
         response = self.__client.describe_availability_zones(
             Filters=[
                 {

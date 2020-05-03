@@ -1,6 +1,6 @@
 import boto3
 
-class EC2:
+class EC2Client:
     def __init__(self):
         self.__client = boto3.client('ec2')
     

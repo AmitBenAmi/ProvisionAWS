@@ -1,10 +1,11 @@
 class TaskDefinition:
-    def __init__(self, ecs_client):
+    def __init__(self, ecs_client, family: str ='web_task_definition'):
         self.__client = ecs_client
+        self.__family = family
     
     def register(self):
         response = self.__client.register_task_definition(
-            family='web',
+            family=self.__family,
             networkMode='awsvpc',
             containerDefinitions=[
                 {
@@ -43,3 +44,8 @@ class TaskDefinition:
                 }
             ]
         )
+
+        self.__revision = response['taskDefinition']['revision']
+    
+    def delete(self):
+        self.__client.deregister_task_definition(taskDefinition=f'{self.__family}:{self.__revision}')

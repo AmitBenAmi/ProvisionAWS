@@ -15,8 +15,8 @@ class PrivateNetwork:
         self.create()
 
         region = Region()
-        az = AvailabilityZone(self.__client, region.name)
+        az = AvailabilityZone(ec2_client=self.__client, region_name=region.name)
 
         for zone_id in az.zone_ids():
-            subnet = Subnet(self.__client, zone_id, self.__id)
+            subnet = Subnet(ec2_client=self.__client, availability_zone_id=zone_id, vpc_id=self.__id)
             subnet.create()

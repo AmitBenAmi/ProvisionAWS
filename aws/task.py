@@ -10,12 +10,6 @@ class TaskDefinition:
                 {
                     'name': 'nodejs',
                     'image': 'amitbenami/server-details:alpine-1.0.0',
-                    'command': [
-                        'sleep',
-                        '360',
-                    ],
-                    'cpu': 10,
-                    'memory': 10,
                     'portMappings': [
                         {
                             'containerPort': 8080,
@@ -26,24 +20,26 @@ class TaskDefinition:
                     'environment': [
                         {
                             'name': 'WEB_PORT',
-                            'value': 8080
+                            'value': '8080'
                         }
                     ],
                     'healthCheck': {
                         'command': [ "CMD_SHELL", "wget -qO- http://localhost:8080 || exit 1" ],
                         'startPeriod': 10
                     },
-                    'requiresCompatibilities': 'FARGATE',
-                    'tags': [
-                        {
-                            'key': 'Applicant',
-                            'value': 'Amit Ben Ami'
-                        },
-                        {
-                            'key': 'Position',
-                            'value': 'DevOps Engineer'
-                        }
-                    ]
                 },
+            ],
+            requiresCompatibilities=['FARGATE'],
+            cpu='.25 vcpu',
+            memory='0.5 GB',
+            tags=[
+                {
+                    'key': 'Applicant',
+                    'value': 'Amit Ben Ami'
+                },
+                {
+                    'key': 'Position',
+                    'value': 'DevOps Engineer'
+                }
             ]
         )

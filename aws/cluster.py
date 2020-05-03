@@ -1,12 +1,10 @@
-from boto3.session import Session#.Session import client as EcsClient
-
 class Cluster:
     def __init__(self, ecs_client, cluster_name: str):
-        self.__ecs = ecs_client
+        self.__client = ecs_client
         self.__cluster_name = cluster_name
     
     def create(self):
-        response = self.__ecs.create_cluster(
+        response = self.__client.create_cluster(
             clusterName=self.__cluster_name,
             tags=[
                 {

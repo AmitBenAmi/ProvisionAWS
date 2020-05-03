@@ -4,7 +4,7 @@ class AvailabilityZone:
         self.__region_name = region_name
 
     def zone_ids(self):
-        if (hasattr(self, '__zones') == None):
+        if not hasattr(self, '__zones'):
             self.__get_all_zones_for_region()
             
         return list(map(lambda zone: zone['ZoneId'], self.__zones))

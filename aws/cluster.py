@@ -26,3 +26,6 @@ class Cluster:
                 'FARGATE'
             ]
         )
+    
+    def delete(self):
+        response = self.__client.delete_cluster(cluster=self.__cluster_name)

@@ -8,5 +8,5 @@ COPY ["package.json", "index.js", "./"]
 USER node
 RUN npm install
 
-ENV WEB_PORT 80
+ENV WEB_PORT 8080
 ENTRYPOINT [ "node", "index.js" ]

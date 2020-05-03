@@ -1,4 +1,4 @@
-from ec2 import ApplicationLoadBalancer
+from elb import ApplicationLoadBalancer
 import math
 
 class Service:

@@ -1,6 +1,6 @@
 import boto3
 
-class ECS:
+class ECSClient:
     def __init__(self):
         self.__client = boto3.client('ecs')
     

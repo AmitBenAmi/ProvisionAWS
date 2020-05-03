@@ -1,5 +1,5 @@
 class TaskDefinition:
-    def __init__(self, ecs_client: EcsClient):
+    def __init__(self, ecs_client):
         self.__client = ecs_client
     
     def register(self):

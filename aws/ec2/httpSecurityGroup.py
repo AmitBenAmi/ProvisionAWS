@@ -71,5 +71,5 @@ class HttpSecurityGroup:
                     self.__id
                 ]
             )
-        except botocore.exceptions.WaiterError e:
+        except botocore.exceptions.WaiterError as e:
             print(f'Error waiting for the security group. Error: {e.message}')

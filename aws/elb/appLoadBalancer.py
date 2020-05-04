@@ -1,4 +1,5 @@
 from elb import TargetGroup
+import botocore
 
 class ApplicationLoadBalancer:
     def __init__(
@@ -52,6 +53,8 @@ class ApplicationLoadBalancer:
 
         self.__arn = response['LoadBalancers'][0]['LoadBalancerArn']
         self.__dns = response['LoadBalancers'][0]['DNSName']
+
+        self.__wait()
     
     def create_listener(self):
         response = self.__client.create_listener(
@@ -70,3 +73,14 @@ class ApplicationLoadBalancer:
         response = self.__client.delete_load_balancer(
             LoadBalancerArn=self.__arn
         )
+    
+    def __wait(self):
+        try:
+            waiter = self.__client.get_waiter('load_balancer_available')
+            waiter.wait(
+                LoadBalancerArns=[
+                    self.__arn
+                ]
+            )
+        except botocore.exceptions.WaiterError as e:
+            print(f'Error waiting for the Load Balancer. Error: {e.message}')

@@ -20,9 +20,6 @@ class HttpSecurityGroup:
         self.__id = response['GroupId']
 
         self.__create_ingress()
-
-        vpc_default_group_id = self.__vpc_default_security_group()
-        self.__create_egress_for_healthcheck(egress_group_id=vpc_default_group_id)
     
     def __create_ingress(self):
         response = self.__client.authorize_security_group_ingress(
@@ -42,24 +39,7 @@ class HttpSecurityGroup:
             ]
         )
     
-    def __create_egress_for_healthcheck(self, egress_group_id: str):
-        response = self.__client.authorize_security_group_egress(
-            GroupId=self.__id,
-            IpPermissions=[
-                {
-                    'FromPort': self.__healthcheck_port,
-                    'ToPort': self.__healthcheck_port,
-                    'IpProtocol': 'tcp',
-                    'UserIdGroupPairs': [
-                        {
-                            'GroupId': egress_group_id
-                        }
-                    ]
-                }
-            ]
-        )
-    
-    def __vpc_default_security_group(self):
+    def vpc_default_security_group(self):
         response = self.__client.describe_security_groups(
             Filters=[
                 {

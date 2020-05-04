@@ -15,10 +15,10 @@ vpc.create_with_public_subnet(all_availability_zones=True)
 
 elb_config = dict(config.items(constants.ELB_CONFIG_SECTION))
 elb_client = ELBClient().client
-target_group = TargetGroup(elbv2_client=elb_client, protocol='HTTP', vpc_id=vpc.id, name=elb_config['target_group_name'], port=elb_config['target_group_port'], health_check_path=elb_config['target_group_health_check_path'], health_check_interval=elb_config['target_group_health_check_interval'], health_check_timeout=elb_config['target_group_health_check_timeout'])
+target_group = TargetGroup(elbv2_client=elb_client, protocol='HTTP', vpc_id=vpc.id, name=elb_config['target_group_name'], port=int(elb_config['target_group_port']), health_check_path=elb_config['target_group_health_check_path'], health_check_interval=int(elb_config['target_group_health_check_interval']), health_check_timeout=int(elb_config['target_group_health_check_timeout']))
 target_group.create()
 
-security_group = HttpSecurityGroup(ec2_client=ec2_client, vpc_id=vpc.id, group_name=ec2_config['http_security_group_name'], port=ec2_config['http_security_group_ingress_port'], incoming_cidr=ec2_config['internet_gateway_cidr'])
+security_group = HttpSecurityGroup(ec2_client=ec2_client, vpc_id=vpc.id, group_name=ec2_config['http_security_group_name'], port=int(ec2_config['http_security_group_ingress_port']), incoming_cidr=ec2_config['internet_gateway_cidr'])
 security_group.create()
 vpc_default_security_group = security_group.vpc_default_security_group()
 

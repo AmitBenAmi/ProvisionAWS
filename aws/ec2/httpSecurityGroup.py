@@ -6,7 +6,7 @@ class HttpSecurityGroup:
         self.__name = group_name
         self.__vpc_id = vpc_id
         self.__port = port
-        self.__incoming_cide = incoming_cidr
+        self.__incoming_cidr = incoming_cidr
 
     @property
     def id(self):

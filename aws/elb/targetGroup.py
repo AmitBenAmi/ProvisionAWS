@@ -39,4 +39,4 @@ class TargetGroup:
             TargetType=self.__target_type
         )
 
-        self.__arn = response['TargetGroups']['TargetGroupArn']
+        self.__arn = response['TargetGroups'][0]['TargetGroupArn']

@@ -40,7 +40,8 @@ class Service:
             networkConfiguration={
                 'awsvpcConfiguration': {
                     'subnets': subnets_ids
-                }
+                },
+                'assignPublicIp': 'ENABLED'
             },
             healthCheckGracePeriodSeconds=10,
             schedulingStrategy='REPLICA',

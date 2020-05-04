@@ -22,6 +22,10 @@ class Service:
         self.__vpc = vpc
         self.__load_balancer = load_balancer
     
+    @property
+    def name(self):
+        return self.__name
+    
     def create(self):
         # We use rolling update deployment type, and therefore I want only one task to be created each time (for resources reasons)
         maximum_percentage = math.ceil((self.__desired_count + 1) * 100 / self.__desired_count)

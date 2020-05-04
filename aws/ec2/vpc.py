@@ -1,6 +1,8 @@
 from common import Region
 from ec2 import AvailabilityZone
 from ec2 import Subnet
+from ec2 import RouteTable
+from ec2 import InternetGateway
 
 class PrivateNetwork:
     def __init__(self, ec2_client, cidr: str ='10.0.0.0/16'):
@@ -11,8 +13,20 @@ class PrivateNetwork:
         response = self.__client.create_vpc(CidrBlock=self.__cidr)
         self.__id = response['Vpc']['VpcId']
 
-    def create_with_subnet(self):
+    def create_with_private_subnet(self):
         self.create()
 
         subnet = Subnet(ec2_client=self.__client, vpc_id=self.__id)
         subnet.create()
+
+        self.__subnet = subnet
+
+    def create_with_public_subnet(self):
+        self.create_with_private_subnet()
+
+        igw = InternetGateway(ec2_client=self.__client, vpc_id=self.__id)
+        igw.create()
+        igw.attach_to_vpc()
+
+        route_table = RouteTable(ec2_client=self.__client, vpc_id=self.__id)
+        route_table.create_route(igw.id)

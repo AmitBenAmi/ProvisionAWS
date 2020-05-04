@@ -8,8 +8,14 @@ class Subnet:
     def cidr(self):
         return self.__cidr
 
+    @property
+    def id(self):
+        return self.__id
+
     def create(self):
         response = self.__client.create_subnet(
             CidrBlock=self.__cidr,
             VpcId=self.__vpc_id
         )
+
+        self.__id = response['Subnet']['SubnetId']

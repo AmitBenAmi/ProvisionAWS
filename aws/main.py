@@ -46,3 +46,5 @@ task.register(container_name=container_config['container_name'], container_image
 
 service = Service(ecs_client=ecs_client,cluster_name=cluster.arn, task_definition=task.arn, desired_count=10, load_balancer=load_balancer, vpc=vpc, name=ecs_config['service_name'])
 service.create()
+
+task.wait(cluster_arn=cluster.arn, service_name=service.name)

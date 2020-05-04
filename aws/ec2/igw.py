@@ -7,7 +7,7 @@ class InternetGateway:
         response = self.__client.create_internet_gateway()
         self.__id = response['InternetGateway']['InternetGatewayId']
     
-    def attach_to_vpc(self, vpc_id: str):
+    def attach_to_vpc(self):
         response = self.__client.attach_internet_gateway(
             InternetGatewayId=self.__id,
             VpcId=self.__vpc_id

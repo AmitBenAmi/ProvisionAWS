@@ -21,12 +21,12 @@ class ApplicationLoadBalancer:
             Scheme='internet-facing',
             Tags=[
                 {
-                    'key': 'Applicant',
-                    'value': 'Amit Ben Ami'
+                    'Key': 'Applicant',
+                    'Value': 'Amit Ben Ami'
                 },
                 {
-                    'key': 'Position',
-                    'value': 'DevOps Engineer'
+                    'Key': 'Position',
+                    'Value': 'DevOps Engineer'
                 }
             ],
             Type='application',

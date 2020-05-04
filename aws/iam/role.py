@@ -41,7 +41,19 @@ class Role:
                 }
             ]
         )
+
+        self.__wait()
+
     def delete(self):
         self.__iam_client.delete_role(
             RoleName=self.__name
         )
+    
+    def __wait(self):
+        try:
+            waiter = self.__client.get_waiter('role_exists')
+            waiter.wait(
+                RoleName=self.__name
+            )
+        except botocore.exceptions.WaiterError as e:
+            print(f'Error waiting for the role. Error: {e.message}')

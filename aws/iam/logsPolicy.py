@@ -34,8 +34,19 @@ class LogsPolicy:
         )
 
         self.__arn = response['Policy']['Arn']
+
+        self.__wait()
     
     def delete(self):
         response = self.__client.delete_policy(
             PolicyArn=self.__arn
         )
+    
+    def __wait(self):
+        try:
+            waiter = self.__client.get_waiter('policy_exists')
+            waiter.wait(
+                PolicyArn=self.__arn
+            )
+        except botocore.exceptions.WaiterError as e:
+            print(f'Error waiting for the policy. Error: {e.message}')

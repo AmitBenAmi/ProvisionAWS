@@ -38,4 +38,4 @@ class Cluster:
         self.__arn = response['cluster']['clusterArn']
     
     def delete(self):
-        response = self.__client.delete_cluster(cluster=self.__name)
+        response = self.__client.delete_cluster(cluster=self.__arn)

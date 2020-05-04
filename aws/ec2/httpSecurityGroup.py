@@ -13,12 +13,11 @@ class HttpSecurityGroup:
         )
 
         self.__id = response['GroupId']
-        
+
         self.__create_ingress()
     
     def __create_ingress(self):
         response = self.__client.authorize_security_group_ingress(
-            FromPort=80,
             GroupId=self.__id,
             IpPermissions=[
                 {

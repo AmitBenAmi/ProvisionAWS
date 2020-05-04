@@ -18,6 +18,10 @@ class ApplicationLoadBalancer:
         self.__public_subnet_ids = public_subnet_ids
         self.__security_groups = security_groups
         self.__name = name
+    
+    @property
+    def dns(self):
+        return self.__dns
 
     def definition(self):
         return {
@@ -47,6 +51,7 @@ class ApplicationLoadBalancer:
         )
 
         self.__arn = response['LoadBalancers'][0]['LoadBalancerArn']
+        self.__dns = response['LoadBalancers'][0]['DNSName']
     
     def create_listener(self):
         response = self.__client.create_listener(

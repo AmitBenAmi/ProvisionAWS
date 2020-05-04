@@ -24,6 +24,7 @@ class Service:
     def create(self):
         # We use rolling update deployment type, and therefore I want only one task to be created each time (for resources reasons)
         maximum_percentage = math.ceil((self.__desired_count + 1) * 100 / self.__desired_count)
+        subnets_ids = [subnet.id for subnet in self.__vpc.subnets]
 
         response = self.__client.create_service(
             cluster=self.__cluster_name,
@@ -38,9 +39,7 @@ class Service:
             },
             networkConfiguration={
                 'awsvpcConfiguration': {
-                    'subnets': [
-                        self.__vpc.subnet_cidr
-                    ]
+                    'subnets': subnets_ids
                 }
             },
             healthCheckGracePeriodSeconds=10,
@@ -48,14 +47,4 @@ class Service:
             deploymentController={
                 'type': 'ECS'
             },
-            tags=[
-                {
-                    'key': 'Applicant',
-                    'value': 'Amit Ben Ami'
-                },
-                {
-                    'key': 'Position',
-                    'value': 'DevOps Engineer'
-                }
-            ]
         )

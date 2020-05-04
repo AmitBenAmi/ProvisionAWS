@@ -1,5 +1,6 @@
 from common import Region
 from ec2 import AvailabilityZone, Subnet, RouteTable, InternetGateway
+from boto3 import botocore
 
 class PrivateNetwork:
     def __init__(
@@ -87,7 +88,20 @@ class PrivateNetwork:
         route_table = RouteTable(ec2_client=self.__client, vpc_id=self.__id, id=main_route_table_id)
         route_table.create_public_route(igw.id, cidr=self.__internet_gateway_cidr)
 
+        self.__wait()
+
     def delete(self):
         response = self.__client.delete_vpc(
             VpcId=self.__id
         )
+    
+    def __wait(self):
+        try:
+            waiter = self.__client.get_waiter('vpc_available')
+            waiter.wait(
+                VpcIds=[
+                    self.__id
+                ]
+            )
+        except botocore.exceptions.WaiterError as e:
+            print(f'Error waiting for the VPC. Error: {e.message}')

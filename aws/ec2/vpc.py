@@ -13,6 +13,9 @@ class PrivateNetwork:
         response = self.__client.create_vpc(CidrBlock=self.__cidr)
         self.__id = response['Vpc']['VpcId']
 
+    def subnet_cidr(self):
+        return self.__subnet.cidr
+
     def create_with_private_subnet(self):
         self.create()
 

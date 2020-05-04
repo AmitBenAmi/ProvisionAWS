@@ -3,6 +3,10 @@ class Subnet:
         self.__client = ec2_client
         self.__vpc_id = vpc_id
         self.__cidr = cidr
+    
+    @property
+    def cidr(self):
+        return self.__cidr
 
     def create(self):
         response = self.__client.create_subnet(

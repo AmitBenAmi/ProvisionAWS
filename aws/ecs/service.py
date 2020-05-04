@@ -1,13 +1,24 @@
 from elb import ApplicationLoadBalancer
+from ec2 import PrivateNetwork
 import math
 
 class Service:
-    def __init__(self, ecs_client, cluster_name: str, task_definition: str, desirec_count: int, load_balancer: ApplicationLoadBalancer, name: str ='web_service'):
+    def __init__(
+        self, 
+        ecs_client, 
+        cluster_name: str, 
+        task_definition: str, 
+        desirec_count: int, 
+        load_balancer: ApplicationLoadBalancer, 
+        vpc: PrivateNetwork,
+        name: str ='web_service'
+    ):
         self.__client = ecs_client
         self.__cluster_name = cluster_name
         self.__name = name
         self.__task_definition = task_definition
         self.__desired_count = desirec_count
+        self.__vpc = vpc
         self.__load_balancer = load_balancer
     
     def create(self):
@@ -28,7 +39,7 @@ class Service:
             networkConfiguration={
                 'awsvpcConfiguration': {
                     'subnets': [
-                        '10.0.0.0'
+                        self.__vpc.subnet_cidr
                     ]
                 }
             },

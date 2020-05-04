@@ -25,6 +25,14 @@ class TargetGroup:
     def arn(self):
         return self.__arn
 
+    @property
+    def protocol(self):
+        return self.__protocol
+    
+    @property
+    def port(self):
+        return self.__port
+
     def create(self):
         response = self.__client.create_target_group(
             Name=self.__name,

@@ -27,6 +27,7 @@ function _getIpAddress() {
 }
 
 app.get('/', async (req, res) => {
+    console.log('Got incoming request')
     ipAddress = _getIpAddress()
     res.send(`Hostname: ${hostname()}.<br/>IP Address: ${ipAddress}`)
 })

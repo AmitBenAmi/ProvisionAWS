@@ -1,3 +1,5 @@
+from iam import Role
+
 class TaskExecutionRolePolicy:
     def __init__(self, iam_resource, iam_client, role_name: str, policy_arn: str):
         self.__resource = iam_resource
@@ -5,8 +7,19 @@ class TaskExecutionRolePolicy:
         self.__role_name = role_name
         self.__role = self.__resource.Role(self.__role_name)
         self.__policy_arn = policy_arn
+        self.__role = Role(iam_client=iam_client, role_name=role_name)
     
+    @property
+    def role_arn(self):
+        return self.__role.arn
+    
+    @property
+    def role_name(self):
+        return self.__role.name
+
     def create(self, extra_policies: list):
+        self.__role.create()
+
         response = self.__client.attach_role_policy(
             RoleName=self.__role_name,
             PolicyArn=self.__policy_arn
@@ -18,10 +31,5 @@ class TaskExecutionRolePolicy:
                 PolicyArn=policy.arn
             )
     
-    @property
-    def role_arn(self):
-        return self.__role.arn
-    
-    @property
-    def role_name(self):
-        return self.__role.name
+    def delete(self):
+        self.__role.delete()

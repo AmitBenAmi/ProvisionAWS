@@ -3,7 +3,7 @@ import constants
 from ecs import ECSClient, Cluster, TaskDefinition, Service
 from ec2 import EC2Client, PrivateNetwork, HttpSecurityGroup
 from elb import ELBClient, TargetGroup, ApplicationLoadBalancer
-from iam import IAMClient, IAMResource, Role, LogsPolicy, TaskExecutionRolePolicy
+from iam import IAMClient, IAMResource, LogsPolicy, TaskExecutionRolePolicy
 
 config = configparser.SafeConfigParser()
 config.read('config.ini')
@@ -32,10 +32,7 @@ iam_config = dict(config.items(constants.IAM_CONFIG_SECTION))
 iam_client = IAMClient().client
 iam_resource = IAMResource().resource
 execution_role = TaskExecutionRolePolicy(iam_resource=iam_resource, iam_client=iam_client, role_name=iam_config['execution_task_role_name'], policy_arn=iam_config['execution_task_policy_arn'])
-role = Role(iam_client=iam_client, role_name=iam_config['execution_task_role_name'])
 policy = LogsPolicy(iam_client=iam_client, logs_policy_name=iam_config['logs_policy'])
-
-role.create()
 policy.create()
 execution_role.create(extra_policies=[policy])
 

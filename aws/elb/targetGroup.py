@@ -21,6 +21,10 @@ class TargetGroup:
         self.__health_check_interval = health_check_interval
         self.__health_check_timeout = health_check_timeout
 
+    @property
+    def arn(self):
+        return self.__arn
+
     def create(self):
         response = self.__client.create_target_group(
             Name=self.__name,
@@ -35,3 +39,5 @@ class TargetGroup:
             HealthCheckTimeoutSeconds=self.__health_check_timeout,
             TargetType=self.__target_type
         )
+
+        self.__arn = response['TargetGroups']['TargetGroupArn']

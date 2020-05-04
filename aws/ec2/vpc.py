@@ -1,6 +1,6 @@
 from common import Region
 from ec2 import AvailabilityZone, Subnet, RouteTable, InternetGateway
-from boto3 import botocore
+import botocore
 
 class PrivateNetwork:
     def __init__(

@@ -1,3 +1,5 @@
+import botocore
+
 class HttpSecurityGroup:
     def __init__(self, ec2_client, vpc_id: str, group_name: str, port: int =80, incoming_cidr: str = '0.0.0.0/0'):
         self.__client = ec2_client
@@ -20,6 +22,8 @@ class HttpSecurityGroup:
         self.__id = response['GroupId']
 
         self.__create_ingress()
+
+        self.__wait()
     
     def __create_ingress(self):
         response = self.__client.authorize_security_group_ingress(
@@ -58,3 +62,14 @@ class HttpSecurityGroup:
         )
 
         return response['SecurityGroups'][0]['GroupId']
+    
+    def __wait(self):
+        try:
+            waiter = self.__client.get_waiter('security_group_exists')
+            waiter.wait(
+                GroupIds=[
+                    self.__id
+                ]
+            )
+        except botocore.exceptions.WaiterError e:
+            print(f'Error waiting for the security group. Error: {e.message}')

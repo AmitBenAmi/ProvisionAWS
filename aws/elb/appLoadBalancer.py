@@ -8,7 +8,7 @@ class ApplicationLoadBalancer:
         container_name: str, 
         container_port: int, 
         public_subnet_ids: list,
-        security_groups: list,
+        security_groups_ids: list,
         name: str ='web-load-balancer'
     ):
         self.__client = elbv2_client
@@ -16,7 +16,7 @@ class ApplicationLoadBalancer:
         self.__container_name = container_name
         self.__container_port = container_port
         self.__public_subnet_ids = public_subnet_ids
-        self.__security_groups = security_groups
+        self.__security_groups_ids = security_groups_ids
         self.__name = name
     
     @property
@@ -34,7 +34,7 @@ class ApplicationLoadBalancer:
         response = self.__client.create_load_balancer(
             Name=self.__name,
             Subnets=self.__public_subnet_ids,
-            SecurityGroups=self.__security_groups,
+            SecurityGroups=self.__security_groups_ids,
             Scheme='internet-facing',
             Tags=[
                 {

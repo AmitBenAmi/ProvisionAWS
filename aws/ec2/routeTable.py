@@ -1,6 +1,7 @@
 class RouteTable:
-    def __init__(self, ec2_client, vpc_id: str):
+    def __init__(self, ec2_client, vpc_id: str, id: str):
         self.__ec2_client = ec2_client
+        self.__id = id
         self.__vpc_id = vpc_id
 
     @property
@@ -17,3 +18,4 @@ class RouteTable:
             GatewayId=igw_id,
             RouteTableId=self.__id
         )
+

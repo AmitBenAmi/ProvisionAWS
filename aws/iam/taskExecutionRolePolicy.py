@@ -2,9 +2,8 @@ from iam import Role
 
 class TaskExecutionRolePolicy:
     def __init__(self, iam_client, role_name: str, policy_arn: str):
-        self.__client = iam_client
+        self.__client = iam_client,
         self.__role_name = role_name,
-        self.__role = self.__resource.Role(self.__role_name)
         self.__policy_arn = policy_arn
         self.__role = Role(iam_client=iam_client, role_name=role_name)
     

@@ -32,7 +32,7 @@ iam_config = dict(config.items(constants.IAM_CONFIG_SECTION))
 iam_client = IAMClient().client
 iam_resource = IAMResource().resource
 execution_role = TaskExecutionRolePolicy(iam_resource=iam_resource, iam_client=iam_client, role_name=iam_config['execution_task_role_name'], policy_arn=iam_config['execution_task_policy_arn'])
-role = Role(iam_client=iam_client, role_name=execution_role.role_name)
+role = Role(iam_client=iam_client, role_name=iam_config['execution_task_role_name'])
 policy = LogsPolicy(iam_client=iam_client, logs_policy_name=iam_config['logs_policy'])
 
 role.create()

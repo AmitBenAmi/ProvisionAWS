@@ -15,10 +15,14 @@ class LogsPolicy:
             "Statement": [
                 {   
                     "Effect": "Allow",
-                    "Resource": "*",
+                    "Resource": [
+                        "arn:aws:logs:*:*:*"
+                    ],
                     "Action": [
+                        "logs:CreateLogGroup",
                         "logs:CreateLogStream",
-                        "logs:PutLogEvents"
+                        "logs:PutLogEvents",
+                        "logs:DescribeLogStreams"
                     ]
                 }
             ]

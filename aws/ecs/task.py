@@ -1,3 +1,5 @@
+from common import Region
+
 class TaskDefinition:
     def __init__(self, ecs_client, family: str ='web-task-definition', container_name: str ='nodejs'):
         self.__client = ecs_client
@@ -17,6 +19,8 @@ class TaskDefinition:
         return self.__arn
     
     def register(self):
+        region = Region()
+
         response = self.__client.register_task_definition(
             family=self.__family,
             networkMode='awsvpc',
@@ -41,6 +45,14 @@ class TaskDefinition:
                         'command': [ "CMD_SHELL", "wget -qO- http://localhost:8080 || exit 1" ],
                         'startPeriod': 10
                     },
+                    'logConfiguration': {
+                        'logDriver': 'awslogs',
+                        'options': {
+                            'awslogs-group': 'awslogs-web',
+                            'awslogs-region': region.name,
+                            'awslogs-stream-prefix': 'awslogs-web'
+                        }
+                    }
                 },
             ],
             requiresCompatibilities=['FARGATE'],

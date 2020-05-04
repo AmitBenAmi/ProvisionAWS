@@ -1,9 +1,9 @@
 from elb import TargetGroup
 
 class ApplicationLoadBalancer:
-    def __init__(self, elbv2_client, target_group_arn: str, container_name: str, container_port: int, public_subnet_ids: list, name: str ='web-load-balancer'):
+    def __init__(self, elbv2_client, target_group: TargetGroup, container_name: str, container_port: int, public_subnet_ids: list, name: str ='web-load-balancer'):
         self.__client = elbv2_client
-        self.__target_group_arn = target_group_arn
+        self.__target_group = target_group
         self.__container_name = container_name
         self.__container_port = container_port
         self.__public_subnet_ids = public_subnet_ids
@@ -11,7 +11,7 @@ class ApplicationLoadBalancer:
 
     def definition(self):
         return {
-            'targetGroupArn': self.__target_group_arn,
+            'targetGroupArn': self.__target_group.arn,
             'containerName': self.__container_name,
             'containerPort': self.__container_port
         }
@@ -37,15 +37,15 @@ class ApplicationLoadBalancer:
 
         self.__arn = response['LoadBalancers'][0]['LoadBalancerArn']
     
-    def create_listener(self, target_group: TargetGroup):
+    def create_listener(self):
         response = self.__client.create_listener(
             LoadBalancerArn=self.__arn,
-            Protocol=target_group.protocol,
-            Port=target_group.port,
+            Protocol=self.__target_group.protocol,
+            Port=self.__target_group.port,
             DefaultActions=[
                 {
                     'Type': 'forward',
-                    'TargetGroupArn': target_group.arn
+                    'TargetGroupArn': self.__target_group.arn
                 }
             ]
         )

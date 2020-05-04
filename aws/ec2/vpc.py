@@ -28,17 +28,23 @@ class PrivateNetwork:
         igw.create()
         igw.attach_to_vpc()
 
-        route_tables = self.__client.describe_route_tables(
+        main_route_tables = self.__client.describe_route_tables(
             Filters=[
                 {
                     'Name': 'vpc-id',
                     'Values': [
                         self.__id
                     ]
+                },
+                {
+                    'Name': 'association.main',
+                    'Values': [
+                        'true'
+                    ]
                 }
             ]
-        )
+        )['RouteTables'][0]
 
-        route_table_id = route_tables['RouteTables'][0]['RouteTableId']
-        route_table = RouteTable(ec2_client=self.__client, vpc_id=self.__id, id=route_table_id)
+        main_route_table_id = main_route_tables['RouteTableId']
+        route_table = RouteTable(ec2_client=self.__client, vpc_id=self.__id, id=main_route_table_id)
         route_table.create_route(igw.id)

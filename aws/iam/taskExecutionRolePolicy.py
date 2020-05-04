@@ -10,3 +10,7 @@ class TaskExecutionRolePolicy:
     @property
     def role_arn(self):
         return self.__role.arn
+    
+    @property
+    def role_name(self):
+        return self.__role.name

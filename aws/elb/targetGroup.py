@@ -40,3 +40,14 @@ class TargetGroup:
         )
 
         self.__arn = response['TargetGroups'][0]['TargetGroupArn']
+    
+    def register_targets(self, subnets_ids: list):
+        targets = list(map(lambda subnet_id: {
+            'Id': subnet_id,
+            'Port': self.__port  
+        }, subnets_ids))
+
+        response = self.__client.register_targets(
+            TargetGroupArn=self.__arn,
+            Targets=targets
+        )

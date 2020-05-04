@@ -7,12 +7,10 @@ class TaskExecutionRolePolicy:
         self.__policy_arn = 'arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy'
     
     def create(self):
-        self.__client.attach_role_policy(
+        response = self.__client.attach_role_policy(
             RoleName=self.__role_name,
             PolicyArn=self.__policy_arn
         )
-
-        self.__role.load()
     
     @property
     def role_arn(self):

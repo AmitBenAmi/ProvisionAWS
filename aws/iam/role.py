@@ -16,9 +16,14 @@ class Role:
                 {   
                     "Effect": "Allow",
                     "Principal": {
-                        "Service": "ecs-tasks.amazonaws.com"
+                        "Service": [
+                            "ecs-tasks.amazonaws.com",
+                            "ecs.amazonaws.com"
+                        ]
                     },
-                    "Action": "sts:AssumeRole"
+                    "Action": [
+                        "sts:AssumeRole"
+                    ]
                 }
             ]
         })

@@ -34,3 +34,8 @@ class LogsPolicy:
         )
 
         self.__arn = response['Policy']['Arn']
+    
+    def delete(self):
+        response = self.__client.delete_policy(
+            PolicyArn=self.__arn
+        )

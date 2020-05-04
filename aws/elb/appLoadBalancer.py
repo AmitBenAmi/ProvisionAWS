@@ -65,3 +65,8 @@ class ApplicationLoadBalancer:
                 }
             ]
         )
+    
+    def delete(self):
+        response = self.__client.delete_load_balancer(
+            LoadBalancerArn=self.__arn
+        )

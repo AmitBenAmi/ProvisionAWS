@@ -31,17 +31,17 @@ class PrivateNetwork:
     def subnets_cidr(self):
         return [subnet.cidr for subnet in self.__subnets]
 
-    def __create_subnet(self, availability_zone_id: str = None):
+    def __create_subnet(self, cidr: str, availability_zone_id: str = None):
         if availability_zone_id:
-            subnet = Subnet(ec2_client=self.__client, vpc_id=self.__id, availability_zone_id=availability_zone_id, cidr=self.__subnet_cidr) 
+            subnet = Subnet(ec2_client=self.__client, vpc_id=self.__id, availability_zone_id=availability_zone_id, cidr=cidr) 
         else:
-            subnet = Subnet(ec2_client=self.__client, vpc_id=self.__id, cidr=self.__subnet_cidr)
+            subnet = Subnet(ec2_client=self.__client, vpc_id=self.__id, cidr=cidr)
 
         subnet.create()
         return subnet
 
     def __create_with_private_subnet(self):
-        self.__subnets = [self.__create_subnet()]
+        self.__subnets = [self.__create_subnet(self.__subnet_cidr)]
     
     def __create_private_subnets_on_all_az(self):
         region = Region()
@@ -50,7 +50,7 @@ class PrivateNetwork:
         counter = 0
 
         for zone_id in az.zone_ids():
-            subnet = self.__create_subnet(availability_zone_id=zone_id, cidr=self.__multiple_subnets_cidr_template.format(counter))
+            subnet = self.__create_subnet(cidr=self.__multiple_subnets_cidr_template.format(counter), availability_zone_id=zone_id)
             counter += 1
             self.__subnets.append(subnet)
 
@@ -86,3 +86,8 @@ class PrivateNetwork:
         main_route_table_id = main_route_tables['RouteTableId']
         route_table = RouteTable(ec2_client=self.__client, vpc_id=self.__id, id=main_route_table_id)
         route_table.create_public_route(igw.id, cidr=self.__internet_gateway_cidr)
+
+    def delete(self):
+        response = self.__client.delete_vpc(
+            VpcId=self.__id
+        )

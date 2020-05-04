@@ -48,3 +48,8 @@ class TargetGroup:
         )
 
         self.__arn = response['TargetGroups'][0]['TargetGroupArn']
+
+    def delete(self):
+        response = self.__client.delete_target_group(
+            TargetGroupArn=self.__arn
+        )

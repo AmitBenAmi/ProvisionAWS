@@ -41,3 +41,7 @@ class Role:
                 }
             ]
         )
+    def delete(self):
+        self.__iam_client.delete_role(
+            RoleName=self.__name
+        )

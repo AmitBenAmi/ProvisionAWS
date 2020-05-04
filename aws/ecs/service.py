@@ -1,5 +1,6 @@
 from elb import ApplicationLoadBalancer
 from ec2 import PrivateNetwork
+import botocore
 import math
 
 class Service:
@@ -49,3 +50,17 @@ class Service:
                 'type': 'ECS'
             },
         )
+
+        self.__wait()
+    
+    def __wait(self):
+        try:
+            waiter = self.__client.get_waiter('services_stable')
+            waiter.wait(
+                cluster=self.__cluster_name,
+                services=[
+                    self.__name
+                ]
+            )
+        except botocore.exceptions.WaiterError as e:
+            print(f'Error waiting for the service. Error: {e.message}')

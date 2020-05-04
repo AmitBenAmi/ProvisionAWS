@@ -1,3 +1,5 @@
+import botocore
+
 class Subnet:
     def __init__(self, ec2_client, vpc_id: str, cidr: str ='10.0.0.0/24', availability_zone_id: str =None):
         self.__client = ec2_client

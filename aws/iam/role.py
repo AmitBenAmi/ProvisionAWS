@@ -1,4 +1,5 @@
 import json
+import botocore
 
 class Role:
     def __init__(self, iam_client, role_name: str):
@@ -51,7 +52,7 @@ class Role:
     
     def __wait(self):
         try:
-            waiter = self.__client.get_waiter('role_exists')
+            waiter = self.__iam_client.get_waiter('role_exists')
             waiter.wait(
                 RoleName=self.__name
             )

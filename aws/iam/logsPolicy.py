@@ -1,3 +1,4 @@
+import botocore
 import json
 
 class LogsPolicy:

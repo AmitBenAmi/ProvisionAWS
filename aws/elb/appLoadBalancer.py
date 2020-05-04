@@ -1,3 +1,5 @@
+from elb import TargetGroup
+
 class ApplicationLoadBalancer:
     def __init__(self, elbv2_client, target_group_arn: str, container_name: str, container_port: int, public_subnet_ids: list, name: str ='web-load-balancer'):
         self.__client = elbv2_client
@@ -31,4 +33,19 @@ class ApplicationLoadBalancer:
             ],
             Type='application',
             IpAddressType='ipv4'
+        )
+
+        self.__arn = response['LoadBalancers'][0]['LoadBalancerArn']
+    
+    def create_listener(self, target_group: TargetGroup):
+        response = self.__client.create_listener(
+            LoadBalancerArn=self.__arn,
+            Protocol=target_group.protocol,
+            Port=target_group.port,
+            DefaultActions=[
+                {
+                    'Type': 'forward',
+                    'TargetGroupArn': target_group.arn
+                }
+            ]
         )

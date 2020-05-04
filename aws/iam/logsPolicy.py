@@ -1,9 +1,9 @@
 import json
 
 class LogsPolicy:
-    def __init__(self, iam_client):
+    def __init__(self, iam_client, logs_policy_name: str):
         self.__client = iam_client
-        self.__name = 'logs-writing-policy'
+        self.__name = logs_policy_name
     
     @property
     def arn(self):

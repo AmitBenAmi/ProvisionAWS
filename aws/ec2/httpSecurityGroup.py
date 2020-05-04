@@ -1,10 +1,10 @@
 class HttpSecurityGroup:
-    def __init__(self, ec2_client, vpc_id: str, port: int =80, healthcheck_port: int =8080):
+    def __init__(self, ec2_client, vpc_id: str, group_name: str, port: int =80, incoming_cidr: str = '0.0.0.0/0'):
         self.__client = ec2_client
-        self.__name = 'http-security-group'
+        self.__name = group_name
         self.__vpc_id = vpc_id
         self.__port = port
-        self.__healthcheck_port = healthcheck_port
+        self.__incoming_cide = incoming_cidr
 
     @property
     def id(self):
@@ -31,7 +31,7 @@ class HttpSecurityGroup:
                     'IpProtocol': 'tcp',
                     'IpRanges': [
                         {
-                            'CidrIp': '0.0.0.0/0',
+                            'CidrIp': self.__incoming_cidr,
                             'Description': 'HTTP access from all over the world'
                         }
                     ]

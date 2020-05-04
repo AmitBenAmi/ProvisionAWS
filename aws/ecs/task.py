@@ -1,15 +1,10 @@
 from common import Region
 
 class TaskDefinition:
-    def __init__(self, ecs_client, execution_role_arn: str, family: str ='web-task-definition', container_name: str ='nodejs'):
+    def __init__(self, ecs_client, execution_role_arn: str, family: str):
         self.__client = ecs_client
         self.__execution_role_arn = execution_role_arn
         self.__family = family
-        self.__container_name = container_name
-    
-    @property
-    def container_name(self):
-        return self.__container_name
     
     @property
     def family_and_revision(self):
@@ -19,7 +14,7 @@ class TaskDefinition:
     def arn(self):
         return self.__arn
     
-    def register(self):
+    def register(self, container_name: str, container_image: str, container_port: int, container_port_env_variable_name: str, task_vcpu: str, task_memory_in_gb: int, awslogs_group: str, awslogs_stream_prefix: str):
         region = Region()
 
         response = self.__client.register_task_definition(
@@ -28,35 +23,35 @@ class TaskDefinition:
             networkMode='awsvpc',
             containerDefinitions=[
                 {
-                    'name': self.__container_name,
-                    'image': 'docker.io/amitbenami/server-details:alpine-1.0.2',
+                    'name': container_name,
+                    'image': container_image,
                     'portMappings': [
                         {
-                            'containerPort': 8080,
+                            'containerPort': container_port,
                             'protocol': 'tcp'
                         }
                     ],
                     'essential': True,
                     'environment': [
                         {
-                            'name': 'WEB_PORT',
-                            'value': '8080'
+                            'name': container_port_env_variable_name,
+                            'value': f'{container_port}'
                         }
                     ],
                     'logConfiguration': {
                         'logDriver': 'awslogs',
                         'options': {
                             'awslogs-create-group': 'true',
-                            'awslogs-group': 'awslogs-web',
+                            'awslogs-group': awslogs_group,
                             'awslogs-region': region.name,
-                            'awslogs-stream-prefix': 'awslogs-web'
+                            'awslogs-stream-prefix': awslogs_stream_prefix
                         }
                     }
                 },
             ],
             requiresCompatibilities=['FARGATE'],
-            cpu='.5 vcpu',
-            memory='1 GB',
+            cpu=f'{task_vcpu} vcpu',
+            memory=f'{task_memory_in_gb} GB',
             tags=[
                 {
                     'key': 'Applicant',

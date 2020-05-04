@@ -11,7 +11,7 @@ class Service:
         desired_count: int, 
         load_balancer: ApplicationLoadBalancer, 
         vpc: PrivateNetwork,
-        name: str ='web-service'
+        name: str
     ):
         self.__client = ecs_client
         self.__cluster_name = cluster_name

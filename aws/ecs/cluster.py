@@ -1,5 +1,5 @@
 class Cluster:
-    def __init__(self, ecs_client, cluster_name: str ='web-cluster'):
+    def __init__(self, ecs_client, cluster_name: str):
         self.__client = ecs_client
         self.__name = cluster_name
 

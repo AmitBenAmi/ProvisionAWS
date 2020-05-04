@@ -1,10 +1,10 @@
 class TaskExecutionRolePolicy:
-    def __init__(self, iam_resource, iam_client):
+    def __init__(self, iam_resource, iam_client, role_name: str, policy_arn: str):
         self.__resource = iam_resource
         self.__client = iam_client
-        self.__role_name = 'ecsTaskExecutionRole'
+        self.__role_name = role_name
         self.__role = self.__resource.Role(self.__role_name)
-        self.__policy_arn = 'arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy'
+        self.__policy_arn = policy_arn
     
     def create(self, extra_policies: list):
         response = self.__client.attach_role_policy(

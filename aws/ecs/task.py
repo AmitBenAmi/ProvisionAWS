@@ -50,6 +50,7 @@ class TaskDefinition:
                     'logConfiguration': {
                         'logDriver': 'awslogs',
                         'options': {
+                            'awslogs-create-group': 'true',
                             'awslogs-group': 'awslogs-web',
                             'awslogs-region': region.name,
                             'awslogs-stream-prefix': 'awslogs-web'

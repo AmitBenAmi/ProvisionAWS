@@ -27,3 +27,16 @@ class Subnet:
             )
 
         self.__id = response['Subnet']['SubnetId']
+
+        self.__wait()
+    
+    def __wait(self):
+        try:
+            waiter = self.__client.get_waiter('subnet_available')
+            waiter.wait(
+                SubnetIds=[
+                    self.__id
+                ]
+            )
+        except botocore.exceptions.WaiterError as e:
+            print(f'Error waiting for the subnet. Error: {e.message}')

@@ -67,5 +67,5 @@ class TaskDefinition:
         self.__revision = response['taskDefinition']['revision']
         self.__arn = response['taskDefinition']['taskDefinitionArn']
     
-    def delete(self):
+    def deregister(self):
         self.__client.deregister_task_definition(taskDefinition=f'{self.__family}:{self.__revision}')

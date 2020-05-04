@@ -1,12 +1,22 @@
 from elb import TargetGroup
 
 class ApplicationLoadBalancer:
-    def __init__(self, elbv2_client, target_group: TargetGroup, container_name: str, container_port: int, public_subnet_ids: list, name: str ='web-load-balancer'):
+    def __init__(
+        self, 
+        elbv2_client, 
+        target_group: TargetGroup, 
+        container_name: str, 
+        container_port: int, 
+        public_subnet_ids: list,
+        security_groups: list,
+        name: str ='web-load-balancer'
+    ):
         self.__client = elbv2_client
         self.__target_group = target_group
         self.__container_name = container_name
         self.__container_port = container_port
         self.__public_subnet_ids = public_subnet_ids
+        self.__security_groups = security_groups
         self.__name = name
 
     def definition(self):
@@ -20,6 +30,7 @@ class ApplicationLoadBalancer:
         response = self.__client.create_load_balancer(
             Name=self.__name,
             Subnets=self.__public_subnet_ids,
+            SecurityGroups=self.__security_groups,
             Scheme='internet-facing',
             Tags=[
                 {

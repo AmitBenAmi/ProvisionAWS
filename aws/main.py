@@ -1,7 +1,11 @@
+import configparser
 from ecs import ECSClient, Cluster, TaskDefinition, Service
 from ec2 import EC2Client, PrivateNetwork, HttpSecurityGroup
 from elb import ELBClient, TargetGroup, ApplicationLoadBalancer
 from iam import IAMClient, IAMResource, Role, LogsPolicy, TaskExecutionRolePolicy
+
+config = configparser.SafeConfigParser()
+config.read('config.ini')
 
 ec2_client = EC2Client().client
 vpc = PrivateNetwork(ec2_client=ec2_client)

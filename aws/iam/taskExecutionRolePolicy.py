@@ -6,3 +6,7 @@ class TaskExecutionRolePolicy:
     
     def create(self):
         self.__role.attach_policy(PolicyArn=self.__policy_arn)
+    
+    @property
+    def role_arn(self):
+        return self.__role.arn

@@ -29,7 +29,7 @@ class TaskDefinition:
             containerDefinitions=[
                 {
                     'name': self.__container_name,
-                    'image': 'amitbenami/server-details:alpine-1.0.0',
+                    'image': 'docker.io/amitbenami/server-details:alpine-1.0.0',
                     'portMappings': [
                         {
                             'containerPort': 8080,

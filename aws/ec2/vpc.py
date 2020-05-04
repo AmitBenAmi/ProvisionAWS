@@ -9,6 +9,10 @@ class PrivateNetwork:
         self.__client = ec2_client
         self.__cidr = cidr
 
+    @property
+    def id(self):
+        return self.__id
+
     def create(self):
         response = self.__client.create_vpc(CidrBlock=self.__cidr)
         self.__id = response['Vpc']['VpcId']

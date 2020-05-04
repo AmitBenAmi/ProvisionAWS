@@ -1,1 +1,2 @@
 from .appLoadBalancer import ApplicationLoadBalancer
+from .targetGroup import TargetGroup

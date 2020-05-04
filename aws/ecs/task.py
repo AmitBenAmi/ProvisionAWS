@@ -1,5 +1,5 @@
 class TaskDefinition:
-    def __init__(self, ecs_client, family: str ='web_task_definition', container_name: str ='nodejs'):
+    def __init__(self, ecs_client, family: str ='web-task-definition', container_name: str ='nodejs'):
         self.__client = ecs_client
         self.__family = family
         self.__container_name = container_name

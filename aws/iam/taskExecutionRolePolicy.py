@@ -1,11 +1,18 @@
 class TaskExecutionRolePolicy:
-    def __init__(self, iam_resource):
+    def __init__(self, iam_resource, iam_client):
         self.__resource = iam_resource
-        self.__role = self.__resource.Role('ecsTaskExecutionRole')
+        self.__client = iam_client
+        self.__role_name = 'ecsTaskExecutionRole'
+        self.__role = self.__resource.Role(self.__role_name)
         self.__policy_arn = 'arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy'
     
     def create(self):
-        self.__role.attach_policy(PolicyArn=self.__policy_arn)
+        self.__client.attach_role_policy(
+            RoleName=self.__role_name,
+            PolicyArn=self.__policy_arn
+        )
+
+        self.__role.load()
     
     @property
     def role_arn(self):

@@ -12,6 +12,10 @@ class TaskDefinition:
     def family_and_revision(self):
         return f'{self.__family}:{self.__revision | 1}'
     
+    @property
+    def arn(self):
+        return self.__arn
+    
     def register(self):
         response = self.__client.register_task_definition(
             family=self.__family,
@@ -55,6 +59,7 @@ class TaskDefinition:
         )
 
         self.__revision = response['taskDefinition']['revision']
+        self.__arn = response['taskDefinition']['taskDefinitionArn']
     
     def delete(self):
         self.__client.deregister_task_definition(taskDefinition=f'{self.__family}:{self.__revision}')

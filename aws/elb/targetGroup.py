@@ -32,7 +32,6 @@ class TargetGroup:
             Port=self.__port,
             VpcId=self.__vpc_id,
             HealthCheckProtocol=self.__protocol,
-            HealthCheckPort=self.__port,
             HealthCheckEnabled=True,
             HealthCheckPath=self.__health_check_path,
             HealthCheckIntervalSeconds=self.__health_check_interval,

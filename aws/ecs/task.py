@@ -29,7 +29,7 @@ class TaskDefinition:
             containerDefinitions=[
                 {
                     'name': self.__container_name,
-                    'image': 'docker.io/amitbenami/server-details:alpine-1.0.1',
+                    'image': 'docker.io/amitbenami/server-details:alpine-1.0.2',
                     'portMappings': [
                         {
                             'containerPort': 8080,
@@ -43,10 +43,6 @@ class TaskDefinition:
                             'value': '8080'
                         }
                     ],
-                    'healthCheck': {
-                        'command': [ "CMD_SHELL", "wget -qO- http://localhost:8080 || exit 1" ],
-                        'startPeriod': 10
-                    },
                     'logConfiguration': {
                         'logDriver': 'awslogs',
                         'options': {
@@ -59,8 +55,8 @@ class TaskDefinition:
                 },
             ],
             requiresCompatibilities=['FARGATE'],
-            cpu='.25 vcpu',
-            memory='0.5 GB',
+            cpu='.5 vcpu',
+            memory='1 GB',
             tags=[
                 {
                     'key': 'Applicant',

@@ -8,7 +8,7 @@ class Service:
         ecs_client, 
         cluster_name: str, 
         task_definition: str, 
-        desirec_count: int, 
+        desired_count: int, 
         load_balancer: ApplicationLoadBalancer, 
         vpc: PrivateNetwork,
         name: str ='web-service'
@@ -17,7 +17,7 @@ class Service:
         self.__cluster_name = cluster_name
         self.__name = name
         self.__task_definition = task_definition
-        self.__desired_count = desirec_count
+        self.__desired_count = desired_count
         self.__vpc = vpc
         self.__load_balancer = load_balancer
     

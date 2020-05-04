@@ -31,8 +31,6 @@ class PrivateNetwork:
         return subnet
 
     def __create_with_private_subnet(self):
-        self.create()
-
         self.__subnets = [self.__create_subnet()]
     
     def __create_private_subnets_on_all_az(self):
@@ -47,6 +45,8 @@ class PrivateNetwork:
             self.__subnets.append(subnet)
 
     def create_with_public_subnet(self, all_availability_zones: bool):
+        self.create()
+
         if not all_availability_zones:
             self.__create_with_private_subnet()
         else:

@@ -1,8 +1,9 @@
 from common import Region
 
 class TaskDefinition:
-    def __init__(self, ecs_client, family: str ='web-task-definition', container_name: str ='nodejs'):
+    def __init__(self, ecs_client, execution_role_arn: str, family: str ='web-task-definition', container_name: str ='nodejs'):
         self.__client = ecs_client
+        self.__execution_role_arn = execution_role_arn
         self.__family = family
         self.__container_name = container_name
     
@@ -23,6 +24,7 @@ class TaskDefinition:
 
         response = self.__client.register_task_definition(
             family=self.__family,
+            executionRoleArn=self.__execution_role_arn,
             networkMode='awsvpc',
             containerDefinitions=[
                 {

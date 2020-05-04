@@ -77,4 +77,4 @@ class HttpSecurityGroup:
             ]
         )
 
-        return response['SecurityGroups']['GroupId']
+        return response['SecurityGroups'][0]['GroupId']

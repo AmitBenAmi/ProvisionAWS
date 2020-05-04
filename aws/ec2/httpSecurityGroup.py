@@ -4,6 +4,10 @@ class HttpSecurityGroup:
         self.__name = 'http-security-group'
         self.__vpc_id = vpc_id
         self.__port = port
+
+    @property
+    def id(self):
+        return self.__id
     
     def create(self):
         response = self.__client.create_security_group(

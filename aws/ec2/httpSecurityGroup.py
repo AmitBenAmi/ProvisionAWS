@@ -12,9 +12,9 @@ class HttpSecurityGroup:
             VpcId=self.__vpc_id
         )
 
-        self.__create_ingress()
-
         self.__id = response['GroupId']
+        
+        self.__create_ingress()
     
     def __create_ingress(self):
         response = self.__client.authorize_security_group_ingress(

@@ -2,6 +2,10 @@ class InternetGateway:
     def __init__(self, ec2_client, vpc_id: str):
         self.__client = ec2_client
         self.__vpc_id = vpc_id
+
+    @property
+    def id(self):
+        return self.__id
     
     def create(self):
         response = self.__client.create_internet_gateway()

@@ -4,7 +4,7 @@ class TargetGroup:
         elbv2_client, 
         protocol: str, 
         vpc_id: str, 
-        name: str ='web_target_group_http', 
+        name: str ='web-target-group-http', 
         port: int =80, 
         target_type: str ='ip',
         health_check_path: str ='/',

@@ -22,9 +22,7 @@ class Role:
                         ]
                     },
                     "Action": [
-                        "sts:AssumeRole",
-                        "logs:CreateLogStream",
-                        "logs:PutLogEvents"
+                        "sts:AssumeRole"
                     ]
                 }
             ]

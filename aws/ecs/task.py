@@ -1,3 +1,4 @@
+import botocore
 from common import Region
 
 class TaskDefinition:
@@ -69,3 +70,22 @@ class TaskDefinition:
     
     def deregister(self):
         self.__client.deregister_task_definition(taskDefinition=f'{self.__family}:{self.__revision}')
+    
+    def __list_for_service(self, cluster_arn: str, service_name):
+        response = self.__client.list_tasks(
+            cluster=cluster_arn,
+            family=self.__family,
+            serviceName=service_name
+        )
+
+        return response['taskArns']
+
+    def wait(self, cluster_arn: str, service_name: str):
+        try:
+            waiter = self.__client.get_waiter('tasks_running')
+            waiter.wait(
+                cluster=cluster_arn,
+                tasks=self.__list_for_service(cluster_arn=cluster_arn, service_name=service_name)
+            )
+        except botocore.exceptions.WaiterError as e:
+            print(f'Error waiting for the task definition. Error: {e.message}')

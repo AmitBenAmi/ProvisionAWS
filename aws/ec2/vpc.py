@@ -1,8 +1,5 @@
 from common import Region
-from ec2 import AvailabilityZone
-from ec2 import Subnet
-from ec2 import RouteTable
-from ec2 import InternetGateway
+from ec2 import AvailabilityZone, Subnet, RouteTable, InternetGateway
 
 class PrivateNetwork:
     def __init__(self, ec2_client, cidr: str ='10.0.0.0/16'):
@@ -14,26 +11,46 @@ class PrivateNetwork:
         return self.__id
 
     @property
-    def subnet(self):
-        return self.__subnet
+    def subnets(self):
+        return self.__subnets
 
     def create(self):
         response = self.__client.create_vpc(CidrBlock=self.__cidr)
         self.__id = response['Vpc']['VpcId']
 
-    def subnet_cidr(self):
-        return self.__subnet.cidr
+    def subnets_cidr(self):
+        return list(map(lambda subnet: subnet.cidr, self.__subnets))
 
-    def create_with_private_subnet(self):
+    def __create_subnet(self, availability_zone_id: str = None, cidr: str ='10.0.0.0/24'):
+        if availability_zone_id:
+            subnet = Subnet(ec2_client=self.__client, vpc_id=self.__id, availability_zone_id=availability_zone_id, cidr=cidr) 
+        else:
+            subnet = Subnet(ec2_client=self.__client, vpc_id=self.__id)
+
+        subnet.create()
+        return subnet
+
+    def __create_with_private_subnet(self):
         self.create()
 
-        subnet = Subnet(ec2_client=self.__client, vpc_id=self.__id)
-        subnet.create()
+        self.__subnets = [self.__create_subnet()]
+    
+    def __create_private_subnets_on_all_az(self):
+        region = Region()
+        az = AvailabilityZone(self.__client, region.name)
+        self.__subnets = []
+        counter = 0
 
-        self.__subnet = subnet
+        for zone_id in az.zone_ids():
+            subnet = self.__create_subnet(availability_zone_id=zone_id, cidr=f'10.0.{counter}.0/24')
+            counter += 1
+            self.__subnets.append(subnet)
 
-    def create_with_public_subnet(self):
-        self.create_with_private_subnet()
+    def create_with_public_subnet(self, all_availability_zones: bool):
+        if not all_availability_zones:
+            self.__create_with_private_subnet()
+        else:
+            self.__create_private_subnets_on_all_az()
 
         igw = InternetGateway(ec2_client=self.__client, vpc_id=self.__id)
         igw.create()

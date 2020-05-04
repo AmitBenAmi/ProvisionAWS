@@ -7,7 +7,7 @@ class AvailabilityZone:
         if not hasattr(self, '__zones'):
             self.__get_all_zones_for_region()
             
-        return list(map(lambda zone: zone['ZoneId'], self.__zones))
+        return [zone['ZoneId'] for zone in self.__zones]
 
     def __get_all_zones_for_region(self):
         response = self.__client.describe_availability_zones(

@@ -19,7 +19,7 @@ class PrivateNetwork:
         self.__id = response['Vpc']['VpcId']
 
     def subnets_cidr(self):
-        return list(map(lambda subnet: subnet.cidr, self.__subnets))
+        return [subnet.cidr for subnet in self.__subnets]
 
     def __create_subnet(self, availability_zone_id: str = None, cidr: str ='10.0.0.0/24'):
         if availability_zone_id:

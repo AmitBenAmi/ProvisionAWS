@@ -9,7 +9,7 @@ class ApplicationLoadBalancer:
         container_port: int, 
         public_subnet_ids: list,
         security_groups_ids: list,
-        name: str ='web-load-balancer'
+        name: str
     ):
         self.__client = elbv2_client
         self.__target_group = target_group

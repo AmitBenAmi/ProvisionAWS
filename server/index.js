@@ -1,21 +1,37 @@
 const express = require('express');
-const { hostname } = require('os');
-const { lookup } = require('dns').promises;
+const { hostname, networkInterfaces } = require('os');
 
 const app = express();
 const port = process.env.WEB_PORT || 3000;
 
-(async () => {
-    async function _getIpAddress() {
-        return (await lookup(hostname())).address
+function _getIpAddress() {
+    let ifaces = networkInterfaces()
+
+    let ips = ''
+
+    for (iface in ifaces) {
+        ifaces[iface].forEach((ifaceProp) => {
+            if (ifaceProp.family !== 'IPv4' || ifaceProp.internal !== false) {
+                // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+                return
+            }
+
+            ips += `${ifaceProp.address}, `
+            return
+        })
     }
 
-    app.get('/', async (req, res) => {
-        ipAddress = await _getIpAddress()
-        res.send(`Hostname: ${hostname()}.<br/>IP Address: ${ipAddress}`)
-    })
+    ips = ips.substr(0, ips.length - 2)
 
-    app.listen(port, () => {
-        console.log(`Listening on port ${port}`)
-    })
-})();
+    return ips
+}
+
+app.get('/', async (req, res) => {
+    console.log('Got incoming request')
+    ipAddress = _getIpAddress()
+    res.send(`Hostname: ${hostname()}.<br/>IP Address: ${ipAddress}`)
+})
+
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`)
+})

@@ -1,6 +1,8 @@
 # ProvisionAWS
 Program that provisions automatically on AWS
 
+[Github Repo](https://github.com/AmitBenAmi/ProvisionAWS)
+
 # Before running the program
 Run the command from the project base folder:
 
@@ -39,9 +41,14 @@ or
 
 In this case, N is the number of web servers you want to provision
 
+At the end of the running, the DNS will be printed.
+
 You can run the following command for help:
 
 <code>python aws/main.py -h</code>
+
+### Notice
+It takes about 3 minutes to fully provision. Please wait until you see the DNS.
 
 # Sanity Checks
 There are few checks:

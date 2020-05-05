@@ -60,3 +60,7 @@ class ELBInitializer:
             
         self.__load_balancer.create()
         self.__load_balancer.create_listener(certificate_arn=self.__certificate_arn)
+    
+    def wait_targets_healthy(self):
+        print('Waiting for the Target Group to be healthy')
+        self.__target_group.wait()

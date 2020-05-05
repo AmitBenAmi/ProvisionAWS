@@ -1,3 +1,5 @@
+import botocore
+
 class TargetGroup:
     def __init__(
         self, 
@@ -55,3 +57,12 @@ class TargetGroup:
         response = self.__client.delete_target_group(
             TargetGroupArn=self.__arn
         )
+    
+    def wait(self):
+        try:
+            waiter = self.__client.get_waiter('target_in_service')
+            waiter.wait(
+                TargetGroupArn=self.__arn
+            )
+        except botocore.exceptions.WaiterError as e:
+            print(f'Error waiting for the Load Balancer. Error: {e.message}')

@@ -33,6 +33,8 @@ def init_infra(desired_servers):
         publish_subnet_ids=ec2_initializer.subnets_ids)
     ecs_initializer.init()
 
+    elb_initializer.wait_targets_healthy()
+
     cluster_dns = f'{elb_initializer.protocol.lower()}://{elb_initializer.load_balancer_dns}'
 
     if check_cluster(cluster_dns=cluster_dns):

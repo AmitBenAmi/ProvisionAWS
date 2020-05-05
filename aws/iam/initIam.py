@@ -10,6 +10,10 @@ class IAMInitializer:
     def execution_role_arn(self):
         return self.__execution_role.role_arn
     
+    @property
+    def certificate_arn(self):
+        return self.__server_certificate.arn
+    
     def init(self):
         self.__init_policy()
         self.__init_task_execution_role_policy()

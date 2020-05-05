@@ -2,13 +2,14 @@ from common import constants
 from elb import ELBClient, TargetGroup, ApplicationLoadBalancer
 
 class ELBInitializer:
-    def __init__(self, config_sections, vpc_id: str, subnets_ids: list, security_groups_ids: list):
+    def __init__(self, config_sections, vpc_id: str, subnets_ids: list, security_groups_ids: list, certificate_arn: str):
         self.__config = dict(config_sections.items(constants.ELB_CONFIG_SECTION))
         self.__container_config = dict(config_sections.items(constants.CONTAINER_CONFIG_SECTION))
         self.__client = ELBClient().client
         self.__vpc_id = vpc_id
         self.__subnets_ids = subnets_ids
         self.__security_groups_ids = security_groups_ids
+        self.__certificate_arn = certificate_arn
     
     @property
     def load_balancer_definition(self):
@@ -58,4 +59,4 @@ class ELBInitializer:
             name=name)
             
         self.__load_balancer.create()
-        self.__load_balancer.create_listener()
+        self.__load_balancer.create_listener(certificate_arn=self.__certificate_arn)

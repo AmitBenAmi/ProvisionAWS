@@ -8,7 +8,7 @@ class ECSInitializer:
         self.__container_config = dict(config_sections.items[constants.CONTAINER_CONFIG_SECTION])
         self.__client = ECSClient().client
         self.__execution_role_arn = execution_role_arn
-        self.__desired_servers = desired_servers,
+        self.__desired_servers = desired_servers
         self.__load_balancer_definition = load_balancer_definition
         self.__publish_subnet_ids = publish_subnet_ids
     

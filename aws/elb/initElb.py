@@ -7,7 +7,7 @@ class ELBInitializer:
         self.__container_config = dict(config_sections.items(constants.CONTAINER_CONFIG_SECTION))
         self.__client = ELBClient().client
         self.__vpc_id = vpc_id
-        self.__subnets_ids = subnets_ids,
+        self.__subnets_ids = subnets_ids
         self.__security_groups_ids = security_groups_ids
     
     @property

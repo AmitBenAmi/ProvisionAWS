@@ -14,6 +14,10 @@ class ELBInitializer:
     def load_balancer_definition(self):
         return self.__load_balancer.definition()
     
+    @property
+    def load_balancer_dns(self):
+        return self.__load_balancer.dns
+    
     def init(self):
         self.__init_target_group()
         self.__init_load_balancer()

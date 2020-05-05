@@ -30,7 +30,7 @@ def init_infra(desired_servers):
         publish_subnet_ids=ec2_initializer.subnets_ids)
     ecs_initializer.init()
 
-    print(f'It is now available to go to: http://{elb_initializer.load_balancer_dns}')
+    print(f'It is now available to go to: {elb_initializer.protocol.lower()}://{elb_initializer.load_balancer_dns}')
 
 def create_args():
     parser = argparse.ArgumentParser(description='Provision AWS web servers')

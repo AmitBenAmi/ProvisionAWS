@@ -18,12 +18,16 @@ class ELBInitializer:
     def load_balancer_dns(self):
         return self.__load_balancer.dns
     
+    @property
+    def protocol(self):
+        return self.__protocol
+    
     def init(self):
         self.__init_target_group()
         self.__init_load_balancer()
         
     def __init_target_group(self):
-        protocol = self.__config['target_group_protocol']
+        self.__protocol = self.__config['target_group_protocol']
         name = self.__config['target_group_name']
         port = int(self.__config['target_group_port'])
         health_check_path = self.__config['target_group_health_check_path']
@@ -31,7 +35,7 @@ class ELBInitializer:
         health_check_timeout = int(self.__config['target_group_health_check_timeout'])
         self.__target_group = TargetGroup(
             elbv2_client=self.__client, 
-            protocol=protocol, 
+            protocol=self.__protocol, 
             vpc_id=self.__vpc_id, 
             name=name, 
             port=port, 

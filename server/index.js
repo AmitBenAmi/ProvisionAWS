@@ -1,8 +1,18 @@
+const https = require('https')
+const fs = require('fs')
 const express = require('express');
 const { hostname, networkInterfaces } = require('os');
 
 const app = express();
 const port = process.env.WEB_PORT || 3000;
+const certificates_path = process.env.SSL_CERTIFICATES_PATH || '.'
+
+const privateKey = fs.readFileSync(`${certificates_path}/key.pem`, 'utf8')
+const certificate = fs.readFileSync(`${certificates_path}/cert.pem`, 'utf8')
+const credentials = {
+    key: privateKey,
+    cert: certificate
+}
 
 function _getIpAddress() {
     let ifaces = networkInterfaces()
@@ -26,12 +36,18 @@ function _getIpAddress() {
     return ips
 }
 
+app.get('/healthcheck', (req, res) => {
+    console.log(`Got incoming request for healthcheck from: ${req.ip}`)
+    res.sendStatus(200)
+})
+
 app.get('/', async (req, res) => {
-    console.log('Got incoming request')
+    console.log(`Got incoming request for server details from: ${req.ip}`)
     ipAddress = _getIpAddress()
     res.send(`Hostname: ${hostname()}.<br/>IP Address: ${ipAddress}`)
 })
 
-app.listen(port, () => {
+const httpsServer = https.createServer(credentials, app)
+httpsServer.listen(port, () => {
     console.log(`Listening on port ${port}`)
 })

@@ -1,3 +1,4 @@
+import boto3
 import argparse
 import configparser
 from ec2 import EC2Initializer
@@ -12,15 +13,15 @@ def init_infra(desired_servers):
     ec2_initializer = EC2Initializer(config_sections=config)
     ec2_initializer.init()
 
+    iam_initializer = IAMInitializer(config_sections=config)
+    iam_initializer.init()
+
     elb_initializer = ELBInitializer(
         config_sections=config, 
         vpc_id=ec2_initializer.vpc_id, 
         subnets_ids=ec2_initializer.subnets_ids, 
         security_groups_ids=ec2_initializer.security_group_ids)
     elb_initializer.init()
-
-    iam_initializer = IAMInitializer(config_sections=config)
-    iam_initializer.init()
 
     ecs_initializer = ECSInitializer(
         config_sections=config, 

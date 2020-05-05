@@ -27,15 +27,15 @@ The whole system infrastructure includes the following:
 \# Currently auto deletion still not supported
 
 # Running the program
-There are two ways to run the program:
+There are two ways to run the program (go in the terminal to the **aws** diretory first and run from there):
 
-<Code>python aws/main.py</Code>
+<Code>python main.py</Code>
 
 In this case, the program by default will provision 1 web server
 
 or
 
-<Code>python aws/main.py --server N</Code>
+<Code>python main.py --server N</Code>
 
 In this case, N is the number of web servers you want to provision
 

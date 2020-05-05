@@ -3,9 +3,9 @@ from ecs import ECSClient, Cluster, Service, TaskDefinition
 
 class ECSInitializer:
     def __init__(self, config_sections, execution_role_arn: str, desired_servers: int, load_balancer_definition: dict, publish_subnet_ids: list):
-        self.__config = dict(config_sections.items[constants.ECS_CONFIG_SECTION])
-        self.__cloud_watch_config = dict(config_sections.items[constants.CLOUD_WATCH_CONFIG_SECTION])
-        self.__container_config = dict(config_sections.items[constants.CONTAINER_CONFIG_SECTION])
+        self.__config = dict(config_sections.items(constants.ECS_CONFIG_SECTION))
+        self.__cloud_watch_config = dict(config_sections.items(constants.CLOUD_WATCH_CONFIG_SECTION))
+        self.__container_config = dict(config_sections.items(constants.CONTAINER_CONFIG_SECTION))
         self.__client = ECSClient().client
         self.__execution_role_arn = execution_role_arn
         self.__desired_servers = desired_servers

@@ -41,10 +41,13 @@ def init_infra(desired_servers):
         print('There is an issue with HTTP Get request to the cluster')
 
 def check_cluster(cluster_dns):
+
     response = requests.get(url=cluster_dns, verify=False)
+    print(f'Regular status code: {response.status_code}')
 
     healthcheck_path = dict(config.items(constants.ELB_CONFIG_SECTION))['target_group_health_check_path']
     response_health_check = requests.get(url=f'{cluster_dns}{healthcheck_path}', verify=False)
+    print(f'Health Check status code: {response.status_code}')
 
     return response.status_code == 200 and response_health_check.status_code == 200
 

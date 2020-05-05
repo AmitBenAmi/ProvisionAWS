@@ -1,3 +1,4 @@
+import boto3
 import argparse
 import configparser
 from ec2 import EC2Initializer
@@ -12,15 +13,16 @@ def init_infra(desired_servers):
     ec2_initializer = EC2Initializer(config_sections=config)
     ec2_initializer.init()
 
+    iam_initializer = IAMInitializer(config_sections=config)
+    iam_initializer.init()
+
     elb_initializer = ELBInitializer(
         config_sections=config, 
         vpc_id=ec2_initializer.vpc_id, 
         subnets_ids=ec2_initializer.subnets_ids, 
-        security_groups_ids=ec2_initializer.security_group_ids)
+        security_groups_ids=ec2_initializer.security_group_ids,
+        certificate_arn=iam_initializer.certificate_arn)
     elb_initializer.init()
-
-    iam_initializer = IAMInitializer(config_sections=config)
-    iam_initializer.init()
 
     ecs_initializer = ECSInitializer(
         config_sections=config, 
@@ -30,7 +32,7 @@ def init_infra(desired_servers):
         publish_subnet_ids=ec2_initializer.subnets_ids)
     ecs_initializer.init()
 
-    print(f'It is now available to go to: http://{elb_initializer.load_balancer_dns}')
+    print(f'It is now available to go to: {elb_initializer.protocol.lower()}://{elb_initializer.load_balancer_dns}')
 
 def create_args():
     parser = argparse.ArgumentParser(description='Provision AWS web servers')

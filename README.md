@@ -60,9 +60,31 @@ These are the steps required to manually delete the provisions:
 
 * Stop all cluster's tasks
 * Delete the Cluster
+
+<code>aws ecs delete-cluster --cluster <value: Cluster Name or ARN></code>
+
 * Delete the Load Balancer
+
+<code>aws elbv2 delete-load-balancer --load-balancer-name <value: Name of Load Balancer></code>
+
 * Delete the Cloud Watch log group
+
+<code>aws logs delete-log-group --log-group-name <value: Log Group Name></code>
+
 * Delete the Target Group
+
+<code>aws elbv2 delete-target-group --target-group-arn <value: Target Group ARN></code>
+
 * Delete the VPC
+
+<code>aws ec2 delete-vpc --vpc-id <value: VPC ID></code>
+
 * Delete the Role and Policy created
+
+<code>aws iam delete-role --role-name <value: Role Name></code>
+
+<code>aws iam delete-policy --policy-arn <value: Policy ARN></code>
+
 * Delete the SSL Server Certificate
+
+<code>aws ia delete-server-certificate --server-certificate-name <value: Server Certificate Name></code>

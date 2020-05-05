@@ -10,6 +10,10 @@ class ELBInitializer:
         self.__subnets_ids = subnets_ids,
         self.__security_groups_ids = security_groups_ids
     
+    @property
+    def load_balancer_definition(self):
+        return self.__load_balancer.definition()
+    
     def init(self):
         self.__init_target_group()
         self.__init_load_balancer()

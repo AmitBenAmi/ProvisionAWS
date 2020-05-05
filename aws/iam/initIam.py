@@ -6,6 +6,10 @@ class IAMInitializer:
         self.__config = dict(config_sections.items(constants.IAM_CONFIG_SECTION))
         self.__client = IAMClient().client
     
+    @property
+    def execution_role_arn(self):
+        return self.__execution_role.role_arn
+    
     def init(self):
         self.__init_policy()
         self.__init_task_execution_role_policy()

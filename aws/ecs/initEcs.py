@@ -55,6 +55,3 @@ class ECSInitializer:
             task_memory_in_gb=task_memory_in_gb,
             awslogs_group=awslogs_group, 
             awslogs_stream_prefix=awslogs_stream_prefix)
-    
-    def __wait(self):
-        self.__task.wait(cluster_arn=self.__cluster.arn)

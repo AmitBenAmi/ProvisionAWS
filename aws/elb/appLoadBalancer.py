@@ -46,7 +46,17 @@ class ApplicationLoadBalancer:
 
         self.__wait()
     
-    def create_listener(self):
+    def create_listener(self, certificate_arn: str):
+        ssl_policy = None
+        certificates = []
+        if self.__target_group.protocol == 'HTTPS':
+            ssl_policy = 'ELBSecurityPolicy-2016-08'
+            certificates.append(
+                {
+                    'CertificateArn': certificate_arn
+                }
+            )
+
         response = self.__client.create_listener(
             LoadBalancerArn=self.__arn,
             Protocol=self.__target_group.protocol,
@@ -56,7 +66,9 @@ class ApplicationLoadBalancer:
                     'Type': 'forward',
                     'TargetGroupArn': self.__target_group.arn
                 }
-            ]
+            ],
+            SslPolicy=ssl_policy,
+            Certificates=certificates
         )
     
     def delete(self):

@@ -1,4 +1,3 @@
-import boto3
 import argparse
 import configparser
 from ec2 import EC2Initializer

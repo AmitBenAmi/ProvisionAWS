@@ -1,5 +1,6 @@
 from elb import ApplicationLoadBalancer
 from ec2 import PrivateNetwork
+import botocore
 import math
 
 class Service:
@@ -20,6 +21,10 @@ class Service:
         self.__desired_count = desired_count
         self.__vpc = vpc
         self.__load_balancer = load_balancer
+    
+    @property
+    def name(self):
+        return self.__name
     
     def create(self):
         # We use rolling update deployment type, and therefore I want only one task to be created each time (for resources reasons)
@@ -49,3 +54,17 @@ class Service:
                 'type': 'ECS'
             },
         )
+
+        self.__wait()
+    
+    def __wait(self):
+        try:
+            waiter = self.__client.get_waiter('services_stable')
+            waiter.wait(
+                cluster=self.__cluster_name,
+                services=[
+                    self.__name
+                ]
+            )
+        except botocore.exceptions.WaiterError as e:
+            print(f'Error waiting for the service. Error: {e.message}')

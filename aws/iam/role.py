@@ -1,4 +1,5 @@
 import json
+import botocore
 
 class Role:
     def __init__(self, iam_client, role_name: str):
@@ -8,6 +9,10 @@ class Role:
     @property
     def name(self):
         return self.__name
+    
+    @property
+    def arn(self):
+        return self.__arn
     
     def create(self):
         assume_role_policy_document = json.dumps({
@@ -41,7 +46,21 @@ class Role:
                 }
             ]
         )
+
+        self.__arn = response['Role']['Arn']
+
+        self.__wait()
+
     def delete(self):
         self.__iam_client.delete_role(
             RoleName=self.__name
         )
+    
+    def __wait(self):
+        try:
+            waiter = self.__iam_client.get_waiter('role_exists')
+            waiter.wait(
+                RoleName=self.__name
+            )
+        except botocore.exceptions.WaiterError as e:
+            print(f'Error waiting for the role. Error: {e.message}')

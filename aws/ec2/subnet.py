@@ -1,3 +1,5 @@
+import botocore
+
 class Subnet:
     def __init__(self, ec2_client, vpc_id: str, cidr: str ='10.0.0.0/24', availability_zone_id: str =None):
         self.__client = ec2_client
@@ -27,3 +29,16 @@ class Subnet:
             )
 
         self.__id = response['Subnet']['SubnetId']
+
+        self.__wait()
+    
+    def __wait(self):
+        try:
+            waiter = self.__client.get_waiter('subnet_available')
+            waiter.wait(
+                SubnetIds=[
+                    self.__id
+                ]
+            )
+        except botocore.exceptions.WaiterError as e:
+            print(f'Error waiting for the subnet. Error: {e.message}')

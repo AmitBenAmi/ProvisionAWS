@@ -52,17 +52,7 @@ class TaskDefinition:
             ],
             requiresCompatibilities=['FARGATE'],
             cpu=f'{task_vcpu} vcpu',
-            memory=f'{task_memory_in_gb} GB',
-            tags=[
-                {
-                    'key': 'Applicant',
-                    'value': 'Amit Ben Ami'
-                },
-                {
-                    'key': 'Position',
-                    'value': 'DevOps Engineer'
-                }
-            ]
+            memory=f'{task_memory_in_gb} GB'
         )
 
         self.__revision = response['taskDefinition']['revision']

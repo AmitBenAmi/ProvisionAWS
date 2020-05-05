@@ -37,16 +37,6 @@ class ApplicationLoadBalancer:
             Subnets=self.__public_subnet_ids,
             SecurityGroups=self.__security_groups_ids,
             Scheme='internet-facing',
-            Tags=[
-                {
-                    'Key': 'Applicant',
-                    'Value': 'Amit Ben Ami'
-                },
-                {
-                    'Key': 'Position',
-                    'Value': 'DevOps Engineer'
-                }
-            ],
             Type='application',
             IpAddressType='ipv4'
         )

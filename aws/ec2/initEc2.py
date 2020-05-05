@@ -6,6 +6,18 @@ class EC2Initializer:
         self.__config = dict(config_sections.items(constants.EC2_CONFIG_SECTION))
         self.__client = EC2Client().client
     
+    @property
+    def vpc_id(self):
+        return self.__vpc.id
+    
+    @property
+    def subnets_ids(self):
+        return [subnet.id for subnet in self.__vpc.subnets]
+    
+    @property
+    def security_group_ids(self):
+        return [self.__security_group.id, self.__vpc.default_security_group()]
+    
     def init(self):
         self.__init_vpc()
         self.__init_security_group()
@@ -23,12 +35,10 @@ class EC2Initializer:
             internet_gateway_cidr=internet_gateway_cidr)
             
         self.__vpc.create_with_public_subnet(all_availability_zones=True)
-        self.__vpc_default_security_group = self.__vpc.default_security_group()
-        self.__vpc_subnets_ids = list(map(lambda subnet: subnet.id, self.__vpc.subnets))
     
     def __init_security_group(self):
         group_name = self.__config['http_security_group_name']
         port = int(self.__config['http_security_group_ingress_port'])
         incoming_cidr = self.__config['internet_gateway_cidr']
-        security_group = HttpSecurityGroup(ec2_client=self.__client, vpc_id=self.__vpc.id, group_name=group_name, port=port, incoming_cidr=incoming_cidr)
-        security_group.create()
+        self.__security_group = HttpSecurityGroup(ec2_client=self.__client, vpc_id=self.__vpc.id, group_name=group_name, port=port, incoming_cidr=incoming_cidr)
+        self.__security_group.create()

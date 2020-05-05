@@ -12,6 +12,7 @@ class Cluster:
         return self.__name
     
     def create(self):
+        print('Creating the ECS cluster')
         response = self.__client.create_cluster(
             clusterName=self.__name,
             settings=[
@@ -26,6 +27,7 @@ class Cluster:
         )
 
         self.__arn = response['cluster']['clusterArn']
+        print(f'ECS cluster created with name: {self.__name}')
     
     def delete(self):
         response = self.__client.delete_cluster(cluster=self.__arn)

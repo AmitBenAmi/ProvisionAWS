@@ -16,6 +16,7 @@ class Subnet:
         return self.__id
 
     def create(self):
+        print('Creating subnet')
         if self.__availability_zone_id:
             response = self.__client.create_subnet(
                 AvailabilityZoneId=self.__availability_zone_id,
@@ -29,6 +30,7 @@ class Subnet:
             )
 
         self.__id = response['Subnet']['SubnetId']
+        print(f'Subnet created with id: {self.__id}')
 
         self.__wait()
     

@@ -26,8 +26,10 @@ class PrivateNetwork:
         return self.__subnets
 
     def create(self):
+        print('Creating the VPC')
         response = self.__client.create_vpc(CidrBlock=self.__cidr)
         self.__id = response['Vpc']['VpcId']
+        print(f'VPC created with id: {self.__id}')
 
     def subnets_cidr(self):
         return [subnet.cidr for subnet in self.__subnets]
@@ -63,6 +65,7 @@ class PrivateNetwork:
         else:
             self.__create_private_subnets_on_all_az()
 
+        print('Attaching the Internet Gatewat to the VPC')
         igw = InternetGateway(ec2_client=self.__client, vpc_id=self.__id)
         igw.create()
         igw.attach_to_vpc()
@@ -87,8 +90,10 @@ class PrivateNetwork:
         main_route_table_id = main_route_tables['RouteTableId']
         route_table = RouteTable(ec2_client=self.__client, vpc_id=self.__id, id=main_route_table_id)
         route_table.create_public_route(igw.id, cidr=self.__internet_gateway_cidr)
-
+        
         self.__wait()
+        
+        print('Internet Gatewat attached to the VPC')
 
     def delete(self):
         response = self.__client.delete_vpc(

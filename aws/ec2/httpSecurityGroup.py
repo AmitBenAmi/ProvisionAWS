@@ -13,6 +13,7 @@ class HttpSecurityGroup:
         return self.__id
     
     def create(self):
+        print('Creating the security group from incoming HTTP requests')
         response = self.__client.create_security_group(
             Description='Allows HTTP traffic',
             GroupName=self.__name,
@@ -24,6 +25,8 @@ class HttpSecurityGroup:
         self.__create_ingress()
 
         self.__wait()
+
+        print('Security group created')
     
     def __create_ingress(self):
         response = self.__client.authorize_security_group_ingress(

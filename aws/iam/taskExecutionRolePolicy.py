@@ -16,6 +16,7 @@ class TaskExecutionRolePolicy:
         return self.__role.name
 
     def create(self, extra_policies: list):
+        print('Creating the role to write to Cloud Watch')
         self.__role.create()
 
         response = self.__client.attach_role_policy(
@@ -28,6 +29,8 @@ class TaskExecutionRolePolicy:
                 RoleName=self.__role_name,
                 PolicyArn=policy.arn
             )
+        
+        print(f'The role created with name: {self.__role_name}')
     
     def delete(self):
         self.__role.delete()

@@ -34,6 +34,7 @@ class TargetGroup:
         return self.__port
 
     def create(self):
+        print('Creating the Target Group to traffic requests to the ECS cluster')
         response = self.__client.create_target_group(
             Name=self.__name,
             Protocol=self.__protocol,
@@ -48,6 +49,7 @@ class TargetGroup:
         )
 
         self.__arn = response['TargetGroups'][0]['TargetGroupArn']
+        print(f'Target Group created with arn: {self.__arn}')
 
     def delete(self):
         response = self.__client.delete_target_group(

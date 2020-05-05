@@ -32,6 +32,7 @@ class ApplicationLoadBalancer:
         }
     
     def create(self):
+        print('Creating the Load Balancer to balance incoming traffic')
         response = self.__client.create_load_balancer(
             Name=self.__name,
             Subnets=self.__public_subnet_ids,
@@ -45,6 +46,7 @@ class ApplicationLoadBalancer:
         self.__dns = response['LoadBalancers'][0]['DNSName']
 
         self.__wait()
+        print(f'Load Balancer created with arn: {self.__arn}')
     
     def create_listener(self, certificate_arn: str):
         ssl_policy = None
@@ -57,6 +59,7 @@ class ApplicationLoadBalancer:
                 }
             )
 
+        print('Creating the listeners on the Load Balancer')
         response = self.__client.create_listener(
             LoadBalancerArn=self.__arn,
             Protocol=self.__target_group.protocol,
@@ -70,6 +73,8 @@ class ApplicationLoadBalancer:
             SslPolicy=ssl_policy,
             Certificates=certificates
         )
+
+        print('Listeners created on the Load Balancer')
     
     def delete(self):
         response = self.__client.delete_load_balancer(

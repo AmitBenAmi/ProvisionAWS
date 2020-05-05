@@ -105,3 +105,23 @@ class PrivateNetwork:
             )
         except botocore.exceptions.WaiterError as e:
             print(f'Error waiting for the VPC. Error: {e.message}')
+    
+    def default_security_group(self):
+        response = self.__client.describe_security_groups(
+            Filters=[
+                {
+                    'Name': 'vpc-id',
+                    'Values': [
+                        self.id
+                    ]
+                },
+                {
+                    'Name': 'group-name',
+                    'Values': [
+                        'default'
+                    ]
+                }
+            ]
+        )
+
+        return response['SecurityGroups'][0]['GroupId']

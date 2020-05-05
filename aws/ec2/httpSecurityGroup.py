@@ -43,26 +43,6 @@ class HttpSecurityGroup:
             ]
         )
     
-    def vpc_default_security_group(self):
-        response = self.__client.describe_security_groups(
-            Filters=[
-                {
-                    'Name': 'vpc-id',
-                    'Values': [
-                        self.__vpc_id
-                    ]
-                },
-                {
-                    'Name': 'group-name',
-                    'Values': [
-                        'default'
-                    ]
-                }
-            ]
-        )
-
-        return response['SecurityGroups'][0]['GroupId']
-    
     def __wait(self):
         try:
             waiter = self.__client.get_waiter('security_group_exists')

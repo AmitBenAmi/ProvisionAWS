@@ -1,5 +1,3 @@
-from elb import ApplicationLoadBalancer
-from ec2 import PrivateNetwork
 import botocore
 import math
 
@@ -10,8 +8,8 @@ class Service:
         cluster_name: str, 
         task_definition: str, 
         desired_count: int, 
-        load_balancer: ApplicationLoadBalancer, 
-        vpc: PrivateNetwork,
+        load_balancer_definition: dict, 
+        publish_subnet_ids: list,
         name: str
     ):
         self.__client = ecs_client
@@ -19,8 +17,8 @@ class Service:
         self.__name = name
         self.__task_definition = task_definition
         self.__desired_count = desired_count
-        self.__vpc = vpc
-        self.__load_balancer = load_balancer
+        self.__publish_subnet_ids = publish_subnet_ids
+        self.__load_balancer_definition = load_balancer_definition
     
     @property
     def name(self):
@@ -29,13 +27,12 @@ class Service:
     def create(self):
         # We use rolling update deployment type, and therefore I want only one task to be created each time (for resources reasons)
         maximum_percentage = math.ceil((self.__desired_count + 1) * 100 / self.__desired_count)
-        subnets_ids = [subnet.id for subnet in self.__vpc.subnets]
 
         response = self.__client.create_service(
             cluster=self.__cluster_name,
             serviceName=self.__name,
             taskDefinition=self.__task_definition,
-            loadBalancers=[self.__load_balancer.definition()],
+            loadBalancers=[self.__load_balancer_definition],
             desiredCount=self.__desired_count,
             launchType='FARGATE',
             deploymentConfiguration={
@@ -44,7 +41,7 @@ class Service:
             },
             networkConfiguration={
                 'awsvpcConfiguration': {
-                    'subnets': subnets_ids,
+                    'subnets': self.__publish_subnet_ids,
                     'assignPublicIp': 'ENABLED'
                 }
             },

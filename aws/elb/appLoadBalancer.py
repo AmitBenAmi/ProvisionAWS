@@ -49,7 +49,7 @@ class ApplicationLoadBalancer:
     def create_listener(self, certificate_arn: str):
         ssl_policy = None
         certificates = []
-        if self.__target_group.protocol == 'HTTPS':
+        if certificate_arn != None:
             ssl_policy = 'ELBSecurityPolicy-2016-08'
             certificates.append(
                 {

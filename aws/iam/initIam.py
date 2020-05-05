@@ -4,6 +4,7 @@ from iam import IAMClient, LogsPolicy, TaskExecutionRolePolicy, ServerCertificat
 class IAMInitializer:
     def __init__(self, config_sections):
         self.__config = dict(config_sections.items(constants.IAM_CONFIG_SECTION))
+        self.__elb_config = dict(config_sections.items(constants.ELB_CONFIG_SECTION))
         self.__client = IAMClient().client
     
     @property
@@ -12,12 +13,17 @@ class IAMInitializer:
     
     @property
     def certificate_arn(self):
-        return self.__server_certificate.arn
+        if hasattr(self, 'server_certificate'):
+            return self.__server_certificate.arn
+        else:
+            return None
     
     def init(self):
         self.__init_policy()
         self.__init_task_execution_role_policy()
-        self.__init_server_certificate
+
+        if self.__elb_config['target_group_protocol'] == 'HTTPS':
+            self.__init_server_certificate()
 
     def __init_policy(self):
         logs_policy = self.__config['logs_policy_name']

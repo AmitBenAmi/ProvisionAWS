@@ -20,7 +20,8 @@ def init_infra(desired_servers):
         config_sections=config, 
         vpc_id=ec2_initializer.vpc_id, 
         subnets_ids=ec2_initializer.subnets_ids, 
-        security_groups_ids=ec2_initializer.security_group_ids)
+        security_groups_ids=ec2_initializer.security_group_ids,
+        certificate_arn=iam_initializer.certificate_arn)
     elb_initializer.init()
 
     ecs_initializer = ECSInitializer(

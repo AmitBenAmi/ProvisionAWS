@@ -5,3 +5,4 @@ from .routeTable import RouteTable
 from .igw import InternetGateway
 from .httpSecurityGroup import HttpSecurityGroup
 from .vpc import PrivateNetwork
+from .initEc2 import EC2Initializer

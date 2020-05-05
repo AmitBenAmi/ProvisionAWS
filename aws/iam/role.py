@@ -10,6 +10,10 @@ class Role:
     def name(self):
         return self.__name
     
+    @property
+    def arn(self):
+        return self.__arn
+    
     def create(self):
         assume_role_policy_document = json.dumps({
             "Version": "2012-10-17",
@@ -42,6 +46,8 @@ class Role:
                 }
             ]
         )
+
+        self.__arn = response['Role']['Arn']
 
         self.__wait()
 

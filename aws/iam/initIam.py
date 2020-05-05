@@ -13,7 +13,7 @@ class IAMInitializer:
     
     @property
     def certificate_arn(self):
-        if hasattr(self, 'server_certificate'):
+        if hasattr(self, 'has_certificate'):
             return self.__server_certificate.arn
         else:
             return None
@@ -46,3 +46,4 @@ class IAMInitializer:
             key_file_location=key_file_location, 
             certificate_name=cert_name)
         self.__server_certificate.upload()
+        self.has_certificate = True

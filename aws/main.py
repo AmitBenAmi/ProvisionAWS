@@ -24,7 +24,7 @@ vpc_default_security_group = security_group.vpc_default_security_group()
 
 container_config = dict(config.items(constants.CONTAINER_CONFIG_SECTION))
 vpc_subnets_ids = list(map(lambda subnet: subnet.id, vpc.subnets))
-load_balancer = ApplicationLoadBalancer(elbv2_client=elb_client, target_group=target_group, container_name=container_config['container_name'], container_port=container_config['container_port'], public_subnet_ids=vpc_subnets_ids, security_groups_ids=[security_group.id, vpc_default_security_group], name=elb_config['load_balancer_name'])
+load_balancer = ApplicationLoadBalancer(elbv2_client=elb_client, target_group=target_group, container_name=container_config['container_name'], container_port=int(container_config['container_port']), public_subnet_ids=vpc_subnets_ids, security_groups_ids=[security_group.id, vpc_default_security_group], name=elb_config['load_balancer_name'])
 load_balancer.create()
 load_balancer.create_listener()
 
@@ -42,7 +42,7 @@ cluster.create()
 
 cloud_watch_config = dict(config.items(constants.CLOUD_WATCH_CONFIG_SECTION))
 task = TaskDefinition(ecs_client=ecs_client, execution_role_arn=execution_role.role_arn, family=ecs_config['task_family_name'])
-task.register(container_name=container_config['container_name'], container_image=container_config['container_image'], container_port=container_config['container_port'], container_port_env_variable_name=container_config['container_port_env_variable_name'], task_vcpu=ecs_config['task_vcpu'], task_memory_in_gb=ecs_config['memory_in_gb'], awslogs_group=cloud_watch_config['group_name'], awslogs_stream_prefix=cloud_watch_config['stream_prefix'])
+task.register(container_name=container_config['container_name'], container_image=container_config['container_image'], container_port=int(container_config['container_port']), container_port_env_variable_name=container_config['container_port_env_variable_name'], task_vcpu=ecs_config['task_vcpu'], task_memory_in_gb=ecs_config['memory_in_gb'], awslogs_group=cloud_watch_config['group_name'], awslogs_stream_prefix=cloud_watch_config['stream_prefix'])
 
 service = Service(ecs_client=ecs_client,cluster_name=cluster.arn, task_definition=task.arn, desired_count=10, load_balancer=load_balancer, vpc=vpc, name=ecs_config['service_name'])
 service.create()

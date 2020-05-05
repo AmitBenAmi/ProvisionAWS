@@ -55,6 +55,7 @@ There are few checks:
 
 * Load Balancer health checks - to determine whether a task is good to receive traffic
 * Each component provisioned, is waited until created. Otherwise an exception will be thrown
+* At the end when the provisioned is finished, a http get request to both the health check and default path is made to validate responsiveness
 
 # Logging
 The cluster is provisioned with writing to AWS Cloud Watch. The log group name is: **awslogsWeb** (Can be changed in the **config.ini** file)

@@ -1,5 +1,7 @@
 import argparse
 import configparser
+import requests
+from common import constants
 from ec2 import EC2Initializer
 from elb import ELBInitializer
 from iam import IAMInitializer
@@ -31,7 +33,20 @@ def init_infra(desired_servers):
         publish_subnet_ids=ec2_initializer.subnets_ids)
     ecs_initializer.init()
 
-    print(f'It is now available to go to: {elb_initializer.protocol.lower()}://{elb_initializer.load_balancer_dns}')
+    cluster_dns = f'{elb_initializer.protocol.lower()}://{elb_initializer.load_balancer_dns}'
+
+    if check_cluster(cluster_dns=cluster_dns):
+        print(f'It is now available to go to: {cluster_dns}')
+    else:
+        print('There is an issue with HTTP Get request to the cluster')
+
+def check_cluster(cluster_dns):
+    response = requests.get(url=cluster_dns, verify=False)
+
+    healthcheck_path = dict(config.items(constants.ELB_CONFIG_SECTION))['target_group_health_check_path']
+    response_health_check = requests.get(url=f'{cluster_dns}{healthcheck_path}', verify=False)
+
+    return response.status_code == 200 and response_health_check.status_code == 200
 
 def create_args():
     parser = argparse.ArgumentParser(description='Provision AWS web servers')

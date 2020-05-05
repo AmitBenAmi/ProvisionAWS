@@ -28,6 +28,7 @@ class Service:
         # We use rolling update deployment type, and therefore I want only one task to be created each time (for resources reasons)
         maximum_percentage = math.ceil((self.__desired_count + 1) * 100 / self.__desired_count)
 
+        print('Creating Service on the ECS Cluster')
         response = self.__client.create_service(
             cluster=self.__cluster_name,
             serviceName=self.__name,
@@ -53,6 +54,8 @@ class Service:
         )
 
         self.__wait()
+
+        print(f'Service created with name: {self.__name}')
     
     def __wait(self):
         try:

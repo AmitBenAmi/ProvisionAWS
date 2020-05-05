@@ -28,6 +28,8 @@ class LogsPolicy:
                 }
             ]
         })
+
+        print('Creating the policy to write logs to Cloud Watch')
         response = self.__client.create_policy(
             PolicyName=self.__name,
             PolicyDocument=policy_document,
@@ -37,6 +39,7 @@ class LogsPolicy:
         self.__arn = response['Policy']['Arn']
 
         self.__wait()
+        print(f'Policy created with arn: {self.__arn}')
     
     def delete(self):
         response = self.__client.delete_policy(

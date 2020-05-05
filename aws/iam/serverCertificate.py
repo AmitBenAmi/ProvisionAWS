@@ -16,6 +16,8 @@ class ServerCertificate:
         with open(self.__key_file_location) as key:
             key_content = key.read()
 
+        print('Uploading the Server Certificate')
+
         response = self.__client.upload_server_certificate(
             ServerCertificateName=self.__name,
             CertificateBody=cert_content,
@@ -23,6 +25,8 @@ class ServerCertificate:
         )
 
         self.__arn = response['ServerCertificateMetadata']['Arn']
+
+        print(f'Certificate uploaded with arn: {self.__arn}')
     
     def delete(self):
         response = self.__client.delete_server_certificate(

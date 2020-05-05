@@ -18,6 +18,7 @@ class TaskDefinition:
     def register(self, container_name: str, container_image: str, container_port: int, container_port_env_variable_name: str, task_vcpu: str, task_memory_in_gb: int, awslogs_group: str, awslogs_stream_prefix: str):
         region = Region()
 
+        print('Registering Task Definition to ECS Cluster')
         response = self.__client.register_task_definition(
             family=self.__family,
             executionRoleArn=self.__execution_role_arn,
@@ -57,6 +58,8 @@ class TaskDefinition:
 
         self.__revision = response['taskDefinition']['revision']
         self.__arn = response['taskDefinition']['taskDefinitionArn']
+
+        print(f'Task Definition created with revision: {self.__revision}')
     
     def deregister(self):
         self.__client.deregister_task_definition(taskDefinition=f'{self.__family}:{self.__revision}')

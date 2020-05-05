@@ -34,17 +34,7 @@ class Role:
         })
         response = self.__iam_client.create_role(
             RoleName=self.__name,
-            AssumeRolePolicyDocument=assume_role_policy_document,
-            Tags=[
-                {
-                    'Key': 'Applicant',
-                    'Value': 'Amit Ben Ami'
-                },
-                {
-                    'Key': 'Position',
-                    'Value': 'DevOps Engineer'
-                }
-            ]
+            AssumeRolePolicyDocument=assume_role_policy_document
         )
 
         self.__arn = response['Role']['Arn']

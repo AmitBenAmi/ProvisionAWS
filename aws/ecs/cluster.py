@@ -14,16 +14,6 @@ class Cluster:
     def create(self):
         response = self.__client.create_cluster(
             clusterName=self.__name,
-            tags=[
-                {
-                    'key': 'Applicant',
-                    'value': 'Amit Ben Ami'
-                },
-                {
-                    'key': 'Position',
-                    'value': 'DevOps Engineer'
-                }
-            ],
             settings=[
                 {
                     'name': 'containerInsights',
